@@ -1,0 +1,34 @@
+.navigation {
+  padding: 0;
+  margin: 0;
+  padding: 20px;
+  height: 100px;
+  background: #CCDC9F;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.navigation_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.navigation_items {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  list-style: none;
+}
+
+.navigation_item {
+  cursor: pointer;
+}
+
+.navigation_icon {
+  padding: 10px;
+}

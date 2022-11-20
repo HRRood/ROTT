@@ -1,0 +1,23 @@
+/*!****************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[3].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[3].oneOf[5].use[3]!./styles/components/content/InfoBlock.module.css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************/
+.InfoBlock_info_block__nuxCP {
+  margin: 0 10px;
+  padding: 10px;
+  border: 1px solid #dedede;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  height: 100%;
+}
+
+.InfoBlock_info_block_brand__iF_dI {
+  border-color: #CCDC9F;
+  background-color: #fafdf3;
+}
+
+.InfoBlock_info_block_error__T4DiS {
+  border-color: #dc9f9f;
+  background-color: #fdf3f3;
+
+}
+

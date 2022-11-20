@@ -1,0 +1,212 @@
+.column {
+  margin: 10px 0;
+}
+
+.column_10 {
+  width: 10%;
+}
+
+.column_20 {
+  width: 20%;
+}
+
+.column_30 {
+  width: 30%;
+}
+
+.column_40 {
+  width: 40%;
+}
+
+.column_50 {
+  width: 50%;
+}
+
+.column_60 {
+  width: 60%;
+}
+
+.column_70 {
+  width: 70%;
+}
+
+.column_80 {
+  width: 80%;
+}
+
+.column_90 {
+  width: 90%;
+}
+
+.column_100 {
+  width: 100%;
+}
+
+@media (min-width: 577px){
+  .columnsm_10 {
+    width: 10%;
+  }
+
+  .columnsm_20 {
+    width: 20%;
+  }
+
+  .columnsm_30 {
+    width: 30%;
+  }
+
+  .columnsm_40 {
+    width: 40%;
+  }
+
+  .columnsm_50 {
+    width: 50%;
+  }
+
+  .columnsm_60 {
+    width: 60%;
+  }
+
+  .columnsm_70 {
+    width: 70%;
+  }
+
+  .columnsm_80 {
+    width: 80%;
+  }
+
+  .columnsm_90 {
+    width: 90%;
+  }
+
+  .columnsm_100 {
+    width: 100%;
+  }
+
+}
+
+@media (min-width: 768px){
+    .columnmd_10 {
+    width: 10%;
+  }
+
+  .columnmd_20 {
+    width: 20%;
+  }
+
+  .columnmd_30 {
+    width: 30%;
+  }
+
+  .columnmd_40 {
+    width: 40%;
+  }
+
+  .columnmd_50 {
+    width: 50%;
+  }
+
+  .columnmd_60 {
+    width: 60%;
+  }
+
+  .columnmd_70 {
+    width: 70%;
+  }
+
+  .columnmd_80 {
+    width: 80%;
+  }
+
+  .columnmd_90 {
+    width: 90%;
+  }
+
+  .columnmd_100 {
+    width: 100%;
+  }
+}
+
+@media (min-width: 992px){
+    .columnlg_10 {
+    width: 10%;
+  }
+
+  .columnlg_20 {
+    width: 20%;
+  }
+
+  .columnlg_30 {
+    width: 30%;
+  }
+
+  .columnlg_40 {
+    width: 40%;
+  }
+
+  .columnlg_50 {
+    width: 50%;
+  }
+
+  .columnlg_60 {
+    width: 60%;
+  }
+
+  .columnlg_70 {
+    width: 70%;
+  }
+
+  .columnlg_80 {
+    width: 80%;
+  }
+
+  .columnlg_90 {
+    width: 90%;
+  }
+
+  .columnlg_100 {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1200px){
+    .columnxl_10 {
+    width: 10%;
+  }
+
+  .columnxl_20 {
+    width: 20%;
+  }
+
+  .columnxl_30 {
+    width: 30%;
+  }
+
+  .columnxl_40 {
+    width: 40%;
+  }
+
+  .columnxl_50 {
+    width: 50%;
+  }
+
+  .columnxl_60 {
+    width: 60%;
+  }
+
+  .columnxl_70 {
+    width: 70%;
+  }
+
+  .columnxl_80 {
+    width: 80%;
+  }
+
+  .columnxl_90 {
+    width: 90%;
+  }
+
+  .columnxl_100 {
+    width: 100%;
+  }
+}
