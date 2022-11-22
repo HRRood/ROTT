@@ -14,6 +14,10 @@
   width: 30%;
 }
 
+.column_33 {
+  width: 33.33%;
+}
+
 .column_40 {
   width: 40%;
 }
@@ -53,6 +57,10 @@
 
   .columnsm_30 {
     width: 30%;
+  }
+
+  .columnsm_33 {
+    width: 33.33%;
   }
 
   .columnsm_40 {
@@ -98,6 +106,10 @@
     width: 30%;
   }
 
+  .columnmd_33 {
+    width: 33.33%;
+  }
+
   .columnmd_40 {
     width: 40%;
   }
@@ -140,6 +152,9 @@
     width: 30%;
   }
 
+  .columnlg_33 {
+    width: 33.33%;
+  }
   .columnlg_40 {
     width: 40%;
   }
@@ -180,6 +195,10 @@
 
   .columnxl_30 {
     width: 30%;
+  }
+
+  .columnxl_33 {
+    width: 33.33%;
   }
 
   .columnxl_40 {

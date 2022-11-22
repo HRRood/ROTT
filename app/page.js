@@ -57,6 +57,26 @@ export default function Page() {
           </Block>
         </Column>
       </Row>
+
+      <Row>
+        <Column width={33}>
+          <Block>
+            <p className={styles.title}>Streaks</p>
+            <p>4</p>
+          </Block>
+        </Column>
+        <Column width={33}>
+          <Block>
+            <p className={styles.title}>Points</p>
+            <p>138</p>
+          </Block>
+        </Column>
+        <Column width={33}>
+          <Block>
+            <p className={styles.title}>Recente badges</p>
+          </Block>
+        </Column>
+      </Row>
     </div>
   );
 }
