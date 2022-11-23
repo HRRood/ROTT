@@ -16,3 +16,7 @@
 .block {
   padding: 30px;
 }
+
+.error {
+  color: #dc9f9f;
+}

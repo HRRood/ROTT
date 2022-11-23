@@ -1,0 +1,21 @@
+// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { withIronSessionApiRoute } from "iron-session/next";
+import { sessionOptions } from "../../lib/session";
+
+async function handler(req, res) {
+  if (req.session.user) {
+    // in a real world application you might read the user id from the session and then do a database request
+    // to get more information on the user if needed
+
+    res.json({
+      ...req.session.user,
+      isLoggedIn: true,
+    });
+  } else {
+    res.json({
+      isLoggedIn: false,
+    });
+  }
+}
+
+export default withIronSessionApiRoute(handler, sessionOptions);

@@ -6,13 +6,25 @@ import { Row } from "../components/content/Row";
 import styles from "../styles/Home.module.css";
 import { getTimePartOfDay } from "../utils/get-time-part-of-day";
 
-export default function Page() {
+import { withIronSessionSsr } from "iron-session/next";
+import { sessionOptions } from "../lib/session";
+import { useEffect } from "react";
+import { useUserContext } from "../context/user";
+import { getUserById } from "./api/user/[id]";
+
+export default function Home({ userData }) {
+  const [user, setUser] = useUserContext();
+  useEffect(() => {
+    setUser(userData);
+  }, [userData]);
   return (
     <div className={styles.container}>
       <Row>
         <Column width={100} smWidth={50} lgWidth={70}>
           <Block>
-            <p className={styles.title}>{getTimePartOfDay()} Username</p>
+            <p className={styles.title}>
+              {getTimePartOfDay()} {user?.Username}
+            </p>
             <Row>
               <Column width={100}>
                 <Link href="/">
@@ -59,19 +71,25 @@ export default function Page() {
       </Row>
 
       <Row>
-        <Column width={33}>
+        <Column width={25}>
           <Block>
-            <p className={styles.title}>Streaks</p>
-            <p>4</p>
+            <p className={styles.title}>Assignment Streaks</p>
+            <p>{user?.AssignmentStreak}</p>
           </Block>
         </Column>
-        <Column width={33}>
+        <Column width={25}>
+          <Block>
+            <p className={styles.title}>Logged in Streaks</p>
+            <p>{user?.LoginStreak}</p>
+          </Block>
+        </Column>
+        <Column width={25}>
           <Block>
             <p className={styles.title}>Points</p>
-            <p>138</p>
+            <p>{user?.Points}</p>
           </Block>
         </Column>
-        <Column width={33}>
+        <Column width={25}>
           <Block>
             <p className={styles.title}>Recente badges</p>
           </Block>
@@ -80,3 +98,25 @@ export default function Page() {
     </div>
   );
 }
+
+export const getServerSideProps = withIronSessionSsr(async function ({ req, res }) {
+  const user = req.session.user;
+
+  if (user === undefined) {
+    res.setHeader("location", "/login");
+    res.statusCode = 302;
+    res.end();
+    return {
+      props: {
+        userData: { isLoggedIn: false, login: "", avatarUrl: "" },
+      },
+    };
+  }
+
+  const [rows, columns] = await getUserById(user.Id);
+
+  const userApi = rows[0];
+  return {
+    props: { userData: { ...req.session.user, ...userApi } },
+  };
+}, sessionOptions);

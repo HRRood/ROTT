@@ -7,8 +7,11 @@ import { IoStatsChartOutline } from "react-icons/io5";
 
 import styles from "../../styles/Navigation.module.css";
 import Link from "next/link";
+import { useUserContext } from "../../context/user";
 
-export function Navigation() {
+export default function Navigation() {
+  const [user, setUser] = useUserContext();
+
   return (
     <nav className={styles.navigation}>
       <div className={styles.navigation_container}>
@@ -18,12 +21,35 @@ export function Navigation() {
           </Link>
         </div>
         <ul className={styles.navigation_items}>
-          <li className={`${styles.navigation_icon} ${styles.navigation_item}`}>
-            <IoStatsChartOutline size={40} />
-          </li>
-          <li className={styles.navigation_item}>
-            <Image src={ProfileImg} alt="Profil" width={60} />
-          </li>
+          {user?.isLoggedIn ? (
+            <>
+              <li className={`${styles.navigation_icon} ${styles.navigation_item}`}>
+                <IoStatsChartOutline size={40} />
+              </li>
+              <li className={styles.navigation_item}>
+                <Image src={ProfileImg} alt="Profil" width={60} />
+              </li>
+              <li>
+                <p
+                  onClick={() => {
+                    fetch("/api/logout")
+                      .then((res) => res.json())
+                      .then((res) => {
+                        if (res.success) {
+                          window.location.href = "/login";
+                        }
+                      });
+                  }}
+                >
+                  Logout
+                </p>
+              </li>
+            </>
+          ) : (
+            <li className={styles.navigation_item}>
+              <Link href="/login">Login</Link>
+            </li>
+          )}
         </ul>
       </div>
     </nav>
