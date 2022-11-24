@@ -17,7 +17,14 @@ async function handler(req, res) {
     try {
       const [rows, fields] = await db.query("SELECT * FROM User WHERE username = ? AND password = ?", [username, password]);
       if (rows.length > 0) {
-        const user = rows[0];
+        const user = {
+          Id: rows[0].Id,
+          Username: rows[0].Username,
+          AssignmentStreak: rows[0].AssignmentStreak,
+          LoginStreak: rows[0].LoginStreak,
+          Points: rows[0].Points,
+        };
+
         const userData = { isLoggedIn: true, ...user };
         req.session.user = userData;
         await req.session.save();

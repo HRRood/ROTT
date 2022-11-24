@@ -6,14 +6,21 @@ export default async function handler(req, res) {
   if (rows.length <= 0) {
     return res.status(404).json({ message: "User not found" });
   }
-  res.status(200).json(rows[0]);
+  const user = {
+    Id: rows[0].Id,
+    Username: rows[0].Username,
+    AssignmentStreak: rows[0].AssignmentStreak,
+    LoginStreak: rows[0].LoginStreak,
+    Points: rows[0].Points,
+  };
+  res.status(200).json(user);
 }
 
 export async function getUserById(id) {
   const db = await mysql.createConnection({
     host: "127.0.0.1",
     user: "root",
-    password: "CannondaleSystem6#",
+    password: "",
     database: "Rottprototype",
   });
 
