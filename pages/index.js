@@ -3,20 +3,23 @@ import { Block } from "../components/content/Block";
 import { Column } from "../components/content/Column";
 import { InfoBlock } from "../components/content/InfoBlock";
 import { Row } from "../components/content/Row";
-import styles from "../styles/Home.module.css";
 import { getTimePartOfDay } from "../utils/get-time-part-of-day";
-
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "../lib/session";
 import { useEffect } from "react";
 import { useUserContext } from "../context/user";
 import { getUserById } from "./api/user/[id]";
 
+import styles from "../styles/Home.module.css";
+import isUserLoggedIn from "../utils/is-user-logged-in";
+
 export default function Home({ userData }) {
   const [user, setUser] = useUserContext();
+
   useEffect(() => {
     setUser(userData);
   }, [userData]);
+
   return (
     <div className={styles.container}>
       <Row>
@@ -100,9 +103,7 @@ export default function Home({ userData }) {
 }
 
 export const getServerSideProps = withIronSessionSsr(async function ({ req, res }) {
-  const user = req.session.user;
-
-  if (user === undefined) {
+  if (!isUserLoggedIn(req)) {
     res.setHeader("location", "/login");
     res.statusCode = 302;
     res.end();
@@ -113,10 +114,16 @@ export const getServerSideProps = withIronSessionSsr(async function ({ req, res 
     };
   }
 
-  const [rows, columns] = await getUserById(user.Id);
+  const [rows, columns] = await getUserById(req.session.user.Id);
 
-  const userApi = rows[0];
+  const userMapped = {
+    Id: rows[0].Id,
+    Username: rows[0].Username,
+    AssignmentStreak: rows[0].AssignmentStreak,
+    LoginStreak: rows[0].LoginStreak,
+    Points: rows[0].Points,
+  };
   return {
-    props: { userData: { ...req.session.user, ...userApi } },
+    props: { userData: { ...req.session.user, ...userMapped } },
   };
 }, sessionOptions);

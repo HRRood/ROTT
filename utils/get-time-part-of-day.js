@@ -2,10 +2,10 @@ export function getTimePartOfDay() {
   const date = new Date();
   const hours = date.getHours();
   if (hours < 12) {
-    return "Goedemorgen";
+    return "Goedenmorgen";
   } else if (hours < 18) {
-    return "Goedemiddag";
+    return "Goedenmiddag";
   } else {
-    return "Goedeavond";
+    return "Goedenavond";
   }
 }

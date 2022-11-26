@@ -20,7 +20,7 @@ export async function getUserById(id) {
   const db = await mysql.createConnection({
     host: "127.0.0.1",
     user: "root",
-    password: "",
+    password: "SecretPassword1!",
     database: "Rottprototype",
   });
 

@@ -7,7 +7,7 @@ async function handler(req, res) {
   const db = await mysql.createConnection({
     host: "127.0.0.1",
     user: "root",
-    password: "CannondaleSystem6#",
+    password: "SecretPassword1!",
     database: "Rottprototype",
   });
   const { username, password } = req.body;
