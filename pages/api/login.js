@@ -8,14 +8,17 @@ async function handler(req, res) {
     host: "127.0.0.1",
     user: "root",
     password: "SecretPassword1!",
-    database: "Rottprototype",
+    database: "rottprototype",
   });
   const { username, password } = req.body;
   const { method } = req;
 
   if (method === "POST") {
     try {
-      const [rows, fields] = await db.query("SELECT * FROM User WHERE username = ? AND password = ?", [username, password]);
+      const [rows, fields] = await db.query(
+        "SELECT * FROM User WHERE username = ? AND password = ?",
+        [username, password]
+      );
       if (rows.length > 0) {
         const user = {
           Id: rows[0].Id,

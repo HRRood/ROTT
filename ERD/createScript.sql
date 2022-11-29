@@ -8,19 +8,19 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- Schema mydb
 -- -----------------------------------------------------
 -- -----------------------------------------------------
--- Schema Rottprototype
+-- Schema rottprototype
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema Rottprototype
+-- Schema rottprototype
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `Rottprototype` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
-USE `Rottprototype` ;
+CREATE SCHEMA IF NOT EXISTS `rottprototype` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `rottprototype` ;
 
 -- -----------------------------------------------------
--- Table `Rottprototype`.`Assignment`
+-- Table `rottprototype`.`Assignment`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Rottprototype`.`Assignment` (
+CREATE TABLE IF NOT EXISTS `rottprototype`.`Assignment` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `Title` VARCHAR(45) NULL DEFAULT NULL,
   `Description` VARCHAR(255) NULL DEFAULT NULL,
@@ -40,9 +40,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `Rottprototype`.`Badge`
+-- Table `rottprototype`.`Badge`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Rottprototype`.`Badge` (
+CREATE TABLE IF NOT EXISTS `rottprototype`.`Badge` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(255) NOT NULL,
   `Description` VARCHAR(255) NULL DEFAULT NULL,
@@ -55,9 +55,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `Rottprototype`.`BadgeMilestone`
+-- Table `rottprototype`.`BadgeMilestone`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Rottprototype`.`BadgeMilestone` (
+CREATE TABLE IF NOT EXISTS `rottprototype`.`BadgeMilestone` (
   `Id` INT NOT NULL,
   `Badge_id` INT NOT NULL,
   `Description` VARCHAR(255) NOT NULL,
@@ -66,16 +66,16 @@ CREATE TABLE IF NOT EXISTS `Rottprototype`.`BadgeMilestone` (
   INDEX `Constr_BadgeMilestone_Badge_fk_idx` (`Badge_id` ASC) VISIBLE,
   CONSTRAINT `Constr_BadgeMilestone_Badge_fk`
     FOREIGN KEY (`Badge_id`)
-    REFERENCES `Rottprototype`.`Badge` (`Id`))
+    REFERENCES `rottprototype`.`Badge` (`Id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `Rottprototype`.`MultiplechoiceOptions`
+-- Table `rottprototype`.`MultiplechoiceOptions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Rottprototype`.`MultiplechoiceOptions` (
+CREATE TABLE IF NOT EXISTS `rottprototype`.`MultiplechoiceOptions` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `Assignment_id` INT NOT NULL,
   `Name` VARCHAR(255) NOT NULL,
@@ -85,16 +85,16 @@ CREATE TABLE IF NOT EXISTS `Rottprototype`.`MultiplechoiceOptions` (
   INDEX `Constr_MultiplechoiceOptions_Assignment_fk_idx` (`Assignment_id` ASC) VISIBLE,
   CONSTRAINT `Constr_MultiplechoiceOptions_Assignment_fk`
     FOREIGN KEY (`Assignment_id`)
-    REFERENCES `Rottprototype`.`Assignment` (`Id`))
+    REFERENCES `rottprototype`.`Assignment` (`Id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `Rottprototype`.`User`
+-- Table `rottprototype`.`User`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Rottprototype`.`User` (
+CREATE TABLE IF NOT EXISTS `rottprototype`.`User` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `Username` VARCHAR(45) NULL DEFAULT NULL,
   `Password` VARCHAR(255) NOT NULL,
@@ -109,9 +109,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `Rottprototype`.`User_Assignment`
+-- Table `rottprototype`.`User_Assignment`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Rottprototype`.`User_Assignment` (
+CREATE TABLE IF NOT EXISTS `rottprototype`.`User_Assignment` (
   `User_id` INT NOT NULL,
   `Assignment_id` INT NOT NULL,
   `Achieved` INT NULL DEFAULT '0',
@@ -119,19 +119,19 @@ CREATE TABLE IF NOT EXISTS `Rottprototype`.`User_Assignment` (
   INDEX `Constr_User_assignment_Assignment_fk_idx` (`Assignment_id` ASC) VISIBLE,
   CONSTRAINT `Constr_User_assignment_Assignment_fk`
     FOREIGN KEY (`Assignment_id`)
-    REFERENCES `Rottprototype`.`Assignment` (`Id`),
+    REFERENCES `rottprototype`.`Assignment` (`Id`),
   CONSTRAINT `Constr_User_assignment_User_fk`
     FOREIGN KEY (`User_id`)
-    REFERENCES `Rottprototype`.`User` (`Id`))
+    REFERENCES `rottprototype`.`User` (`Id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `Rottprototype`.`User_Assignment_Answer`
+-- Table `rottprototype`.`User_Assignment_Answer`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Rottprototype`.`User_Assignment_Answer` (
+CREATE TABLE IF NOT EXISTS `rottprototype`.`User_Assignment_Answer` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `User_id` INT NOT NULL,
   `Assignment_id` INT NOT NULL,
@@ -142,29 +142,29 @@ CREATE TABLE IF NOT EXISTS `Rottprototype`.`User_Assignment_Answer` (
   INDEX `Constr_UserAssignmentAnswer_Assignment_fk_idx` (`Assignment_id` ASC) VISIBLE,
   CONSTRAINT `Constr_UserAssignmentAnswer_Assignment_fk`
     FOREIGN KEY (`Assignment_id`)
-    REFERENCES `Rottprototype`.`Assignment` (`Id`),
+    REFERENCES `rottprototype`.`Assignment` (`Id`),
   CONSTRAINT `Constr_UserAssignmentAnswer_User_fk`
     FOREIGN KEY (`User_id`)
-    REFERENCES `Rottprototype`.`User` (`Id`))
+    REFERENCES `rottprototype`.`User` (`Id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `Rottprototype`.`User_Badge`
+-- Table `rottprototype`.`User_Badge`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Rottprototype`.`User_Badge` (
+CREATE TABLE IF NOT EXISTS `rottprototype`.`User_Badge` (
   `User_id` INT NOT NULL,
   `Badge_id` INT NOT NULL,
   PRIMARY KEY (`User_id`, `Badge_id`),
   INDEX `Constr_UserBadge_Badge_fk_idx` (`Badge_id` ASC) VISIBLE,
   CONSTRAINT `Constr_UserBadge_Badge_fk`
     FOREIGN KEY (`Badge_id`)
-    REFERENCES `Rottprototype`.`Badge` (`Id`),
+    REFERENCES `rottprototype`.`Badge` (`Id`),
   CONSTRAINT `Constr_UserBadge_User_fk`
     FOREIGN KEY (`User_id`)
-    REFERENCES `Rottprototype`.`User` (`Id`))
+    REFERENCES `rottprototype`.`User` (`Id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;

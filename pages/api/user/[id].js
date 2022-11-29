@@ -21,7 +21,7 @@ export async function getUserById(id) {
     host: "127.0.0.1",
     user: "root",
     password: "SecretPassword1!",
-    database: "Rottprototype",
+    database: "rottprototype",
   });
 
   return await db.query("SELECT * FROM User WHERE id = ?", [id]);
