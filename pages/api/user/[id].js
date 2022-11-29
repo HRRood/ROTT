@@ -1,4 +1,5 @@
 import mysql from "mysql2/promise";
+import { closeConnection, getConnection } from "../../utils/db-connection";
 
 export default async function handler(req, res) {
   const [rows, columns] = await getUserById(req.query.id);
@@ -17,12 +18,7 @@ export default async function handler(req, res) {
 }
 
 export async function getUserById(id) {
-  const db = await mysql.createConnection({
-    host: "127.0.0.1",
-    user: "root",
-    password: "SecretPassword1!",
-    database: "rottprototype",
-  });
+  const db = await getConnection();
 
   return await db.query("SELECT * FROM User WHERE id = ?", [id]);
 }
