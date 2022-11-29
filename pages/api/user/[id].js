@@ -1,24 +1,37 @@
-import mysql from "mysql2/promise";
-import { closeConnection, getConnection } from "../../utils/db-connection";
+import { closeConnection, getConnection } from "../../../utils/db-connection";
 
 export default async function handler(req, res) {
-  const [rows, columns] = await getUserById(req.query.id);
+  const response = await getUserById(req.query.id);
 
-  if (rows.length <= 0) {
-    return res.status(404).json({ message: "User not found" });
+  if (!response.success) {
+    return res.status(404).json({ success: false, message: response.message });
   }
-  const user = {
-    Id: rows[0].Id,
-    Username: rows[0].Username,
-    AssignmentStreak: rows[0].AssignmentStreak,
-    LoginStreak: rows[0].LoginStreak,
-    Points: rows[0].Points,
-  };
-  res.status(200).json(user);
+  const user = mapUserData(response.data);
+  return res.status(200).json({ success: true, data: user });
 }
 
 export async function getUserById(id) {
   const db = await getConnection();
 
-  return await db.query("SELECT * FROM User WHERE id = ?", [id]);
+  const [rows] = await db.query("SELECT * FROM User WHERE id = ?", [id]);
+
+  if (rows.length <= 0) {
+    return { success: false, message: "User not found" };
+  }
+
+  closeConnection(db);
+  return { success: true, data: rows[0].data };
+}
+
+export function mapUserData(user) {
+  if (!user) {
+    return null;
+  }
+  return {
+    Id: user.Id,
+    Username: user.Username,
+    AssignmentStreak: user.AssignmentStreak,
+    LoginStreak: user.LoginStreak,
+    Points: user.Points,
+  };
 }

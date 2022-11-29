@@ -8,7 +8,7 @@ import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "../lib/session";
 import { useEffect } from "react";
 import { useUserContext } from "../context/user";
-import { getUserById } from "./api/user/[id]";
+import { getUserById, mapUserData } from "./api/user/[id]";
 
 import styles from "../styles/Home.module.css";
 import isUserLoggedIn from "../utils/is-user-logged-in";
@@ -114,15 +114,17 @@ export const getServerSideProps = withIronSessionSsr(async function ({ req, res 
     };
   }
 
-  const [rows, columns] = await getUserById(req.session.user.Id);
+  const response = await getUserById(req.session.user.Id);
 
-  const userMapped = {
-    Id: rows[0].Id,
-    Username: rows[0].Username,
-    AssignmentStreak: rows[0].AssignmentStreak,
-    LoginStreak: rows[0].LoginStreak,
-    Points: rows[0].Points,
-  };
+  if (!response.success) {
+    return {
+      props: {
+        userData: { isLoggedIn: false, login: "", avatarUrl: "" },
+      },
+    };
+  }
+
+  const userMapped = mapUserData(response.data);
   return {
     props: { userData: { ...req.session.user, ...userMapped } },
   };

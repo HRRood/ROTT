@@ -10,5 +10,5 @@ export async function getConnection() {
 }
 
 export function closeConnection(db) {
-  decodeBase64.end();
+  db.end();
 }
