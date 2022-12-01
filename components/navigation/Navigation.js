@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import BrandImg from "../../images/logo/adsailogo.png";
+import BrandImg from "../../images/logo/logo_ads_ai_no_bg.png";
 import ProfileImg from "../../images/profile/profile.png";
 
 import { IoStatsChartOutline } from "react-icons/io5";
@@ -15,9 +15,9 @@ export default function Navigation() {
   return (
     <nav className={styles.navigation}>
       <div className={styles.navigation_container}>
-        <div className={styles.navigation_image}>
+        <div>
           <Link href="/">
-            <Image src={BrandImg} alt="ADSAI" width={100} />
+            <Image className={styles.navigation_image} src={BrandImg} alt="ADSAI" />
           </Link>
         </div>
         <ul className={styles.navigation_items}>
@@ -29,7 +29,7 @@ export default function Navigation() {
               <li className={styles.navigation_item}>
                 <Image src={ProfileImg} alt="Profil" width={60} />
               </li>
-              <li>
+              <li className={styles.navigation_item}>
                 <p
                   onClick={() => {
                     fetch("/api/logout")

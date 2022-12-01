@@ -3,7 +3,7 @@
   margin: 0;
   padding: 20px;
   height: 100px;
-  background: #CCDC9F;
+  background: var(--adsai-dark-blue);
   position: fixed;
   top: 0;
   left: 0;
@@ -27,8 +27,15 @@
 
 .navigation_item {
   cursor: pointer;
+  color: white;
 }
 
 .navigation_icon {
   padding: 10px;
+}
+
+.navigation_image {
+  width: 200px;
+  height: 100px;
+  object-fit: cover;
 }

@@ -10,7 +10,7 @@
 .title {
   font-size: 30px;
   margin: 0;
-  color: #647634
+  color: var(--adsai-dark-blue)
 }
 
 .block {
@@ -18,5 +18,5 @@
 }
 
 .error {
-  color: #dc9f9f;
+  color: var(--adsai-medium-pink);
 }
