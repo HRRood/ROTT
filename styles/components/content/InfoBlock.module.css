@@ -1,19 +1,19 @@
 .info_block {
   margin: 0 10px;
   padding: 10px;
-  border: 1px solid #dedede;
-  background-color: #f7f7f7;
+  border: 1px solid var(--adsai-medium-blue);
+  background-color: var(--adsai-light-blue);
   border-radius: 10px;
   height: 100%;
 }
 
 .info_block_brand {
-  border-color: #CCDC9F;
-  background-color: #fafdf3;
+  border-color: var(--adsai-medium-blue);
+  background-color: var(--adsai-light-blue);
 }
 
 .info_block_error {
-  border-color: #dc9f9f;
-  background-color: #fdf3f3;
+  border-color: var(--adsai-medium-pink);
+  background-color: var(--adsai-light-pink);
 
 }

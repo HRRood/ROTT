@@ -8,6 +8,14 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
+:root {
+  --adsai-light-pink:#efc6c4;
+  --adsai-medium-pink:#ce4942;
+  --adsai-light-blue:#b3e8f0;
+  --adsai-medium-blue:#07b4ce;
+  --adsai-dark-blue:#39445A;
+}
+
 a {
   color: inherit;
   text-decoration: none;

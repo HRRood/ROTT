@@ -6,12 +6,12 @@
 }
 
 .button-primary {
-  background-color: #CCDC9F;
-  color: #647634;
+  background-color: var(--adsai-light-pink);
+  color: var(--adsai-medium-pink);
 }
 
 .button-primary:active,
 .button-primary:hover {
-  background-color: #a7b879;
-  color: #f3f7e9;
+  background-color: var(--adsai-medium-pink);
+  color: #fff;
 }

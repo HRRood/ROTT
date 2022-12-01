@@ -3,10 +3,10 @@
   display:block;
   width:100%;
   padding: 10px 20px;
-  background: #fafdf3;
-  color: #323840;
+  background: var(--adsai-light-blue);
+  color: var(--adsai-dark-blue);
   border: none;
-  border-bottom: 2px solid #e9f3cc;
+  border-bottom: 2px solid var(--adsai-medium-blue);
   border-radius: 4px;
   box-sizing: border-box;
 }
@@ -14,18 +14,18 @@
 .input:not(:placeholder-shown),
 .input:focus {
   outline: none;
-  border-bottom: 2px solid #CCDC9F;
+  border-bottom: 2px solid var(--adsai-medium-blue);
 }
 
 .input:not(:placeholder-shown) ~ .label,
 .input:focus ~ .label {
-  top:-8px;
+  top:-20px;
   font-size:14px;
-  background:#fff;
+  background: transparent;
 }
 
 .label {
-  color:#CCDC9F;
+  color: var(--adsai-dark-blue);
   font-size:16px;
   font-weight:normal;
   position:absolute;
