@@ -13,6 +13,12 @@ import { getUserById, mapUserData } from "./api/user/[id]";
 import styles from "../styles/Home.module.css";
 import isUserLoggedIn from "../utils/is-user-logged-in";
 import { ColumnGrid } from "../components/content/ColumnGrid";
+import { Badge } from "../components/content/Badge";
+import badge1 from "../images/gamification_icons/badge1.png";
+import badge2 from "../images/gamification_icons/badge2.png";
+import badge3 from "../images/gamification_icons/badge3.png";
+import badge4 from "../images/gamification_icons/badge4.png";
+import { ScoreNumber } from "../components/content/ScoreNumber";
 
 export default function Home({ userData }) {
   const [user, setUser] = useUserContext();
@@ -28,21 +34,27 @@ export default function Home({ userData }) {
         <ColumnGrid width={100} smWidth={33} lgWidth={20}>
           <Block>
             <p className={styles.sub_title}>Badges</p>
-          </Block>
-
-          <Block>
-            <p className={styles.sub_title}>Opdracht Streaks</p>
-            <p>{user?.AssignmentStreak}</p>
-          </Block>
-
-          <Block>
-            <p className={styles.sub_title}>Login Streaks</p>
-            <p>{user?.LoginStreak}</p>
+            <div className={styles.badgeGrid}>
+              <Badge image={badge1} />
+              <Badge image={badge2} />
+              <Badge image={badge3} />
+              <Badge image={badge4} />
+            </div>
           </Block>
 
           <Block>
             <p className={styles.sub_title}>Punten</p>
-            <p>{user?.Points}</p>
+            <ScoreNumber score={user?.Points} unit={""}></ScoreNumber>
+          </Block>
+
+          <Block>
+            <p className={styles.sub_title}>Opdracht Streak</p>
+            <ScoreNumber score={user?.AssignmentStreak} unit={""}></ScoreNumber>
+          </Block>
+
+          <Block>
+            <p className={styles.sub_title}>Login Streak</p>
+            <ScoreNumber score={user?.LoginStreak} unit={"weken"}></ScoreNumber>
           </Block>
         </ColumnGrid>
 

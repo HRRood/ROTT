@@ -21,3 +21,9 @@
 .assignments_list li {
   padding: 10px 5px;
 }
+
+.badgeGrid {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  gap: 5%;
+}

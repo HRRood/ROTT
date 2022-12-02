@@ -1,4 +1,8 @@
-.Badge {
-  width: 100px;
-  height: 100px;
+.badge {
+  height: 40px;
+  position: relative;
+}
+
+.badge_image {
+  object-fit: contain;
 }
