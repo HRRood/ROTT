@@ -12,6 +12,7 @@ import { getUserById, mapUserData } from "./api/user/[id]";
 
 import styles from "../styles/Home.module.css";
 import isUserLoggedIn from "../utils/is-user-logged-in";
+import { ColumnGrid } from "../components/content/ColumnGrid";
 
 export default function Home({ userData }) {
   const [user, setUser] = useUserContext();
@@ -23,16 +24,39 @@ export default function Home({ userData }) {
   return (
     <div className={styles.container}>
       <Row>
-        <Column width={100} smWidth={50} lgWidth={70}>
+        {/* Badges, streak, score */}
+        <ColumnGrid width={100} smWidth={33} lgWidth={20}>
+          <Block>
+            <p className={styles.sub_title}>Badges</p>
+          </Block>
+
+          <Block>
+            <p className={styles.sub_title}>Opdracht Streaks</p>
+            <p>{user?.AssignmentStreak}</p>
+          </Block>
+
+          <Block>
+            <p className={styles.sub_title}>Login Streaks</p>
+            <p>{user?.LoginStreak}</p>
+          </Block>
+
+          <Block>
+            <p className={styles.sub_title}>Punten</p>
+            <p>{user?.Points}</p>
+          </Block>
+        </ColumnGrid>
+
+        {/* Center block */}
+        <Column width={100} smWidth={33} lgWidth={50}>
           <Block>
             <p className={styles.title}>
-              {getTimePartOfDay()} {user?.Username}
+              {getTimePartOfDay()} {user?.Username}!
             </p>
             <Row>
               <Column width={100}>
                 <Link href="/">
                   <InfoBlock type="brand">
-                    <p>Ga verder met</p>
+                    <p className={styles.sub_title}>Ga verder met</p>
                     <p>Hoofdstuk 5.2: Covey’s Time Management Matrix</p>
                   </InfoBlock>
                 </Link>
@@ -41,7 +65,7 @@ export default function Home({ userData }) {
               <Column width={100}>
                 <Link href="/">
                   <InfoBlock type="error">
-                    <p>Volgende deadline</p>
+                    <p className={styles.sub_title}>Volgende deadline</p>
                     <p>Deze week, Hoofdstuk 6: Plannen</p>
                   </InfoBlock>
                 </Link>
@@ -49,9 +73,11 @@ export default function Home({ userData }) {
             </Row>
           </Block>
         </Column>
-        <Column width={100} smWidth={50} lgWidth={30}>
+
+        {/* Assignment list */}
+        <Column width={100} smWidth={33} lgWidth={30}>
           <Block>
-            <p className={styles.title}>Opdrachten</p>
+            <p className={styles.sub_title}>Opdrachten</p>
             <ul className={styles.assignments_list}>
               <li>Hoofdstuk 1 - Leren leren</li>
               <li>Hoofdstuk 2 - Samenwerken</li>
@@ -68,33 +94,7 @@ export default function Home({ userData }) {
       <Row>
         <Column width={100}>
           <Block>
-            <p className={styles.title}>Progress</p>
-          </Block>
-        </Column>
-      </Row>
-
-      <Row>
-        <Column width={25}>
-          <Block>
-            <p className={styles.title}>Assignment Streaks</p>
-            <p>{user?.AssignmentStreak}</p>
-          </Block>
-        </Column>
-        <Column width={25}>
-          <Block>
-            <p className={styles.title}>Logged in Streaks</p>
-            <p>{user?.LoginStreak}</p>
-          </Block>
-        </Column>
-        <Column width={25}>
-          <Block>
-            <p className={styles.title}>Points</p>
-            <p>{user?.Points}</p>
-          </Block>
-        </Column>
-        <Column width={25}>
-          <Block>
-            <p className={styles.title}>Recente badges</p>
+            <p className={styles.sub_title}>Voortgang</p>
           </Block>
         </Column>
       </Row>
@@ -102,7 +102,10 @@ export default function Home({ userData }) {
   );
 }
 
-export const getServerSideProps = withIronSessionSsr(async function ({ req, res }) {
+export const getServerSideProps = withIronSessionSsr(async function ({
+  req,
+  res,
+}) {
   if (!isUserLoggedIn(req)) {
     res.setHeader("location", "/login");
     res.statusCode = 302;
@@ -128,4 +131,5 @@ export const getServerSideProps = withIronSessionSsr(async function ({ req, res 
   return {
     props: { userData: { ...req.session.user, ...userMapped } },
   };
-}, sessionOptions);
+},
+sessionOptions);

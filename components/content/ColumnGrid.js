@@ -1,6 +1,6 @@
-import styles from "../../styles/components/content/Column.module.css";
+import styles from "../../styles/components/content/ColumnGrid.module.css";
 
-export function Column({
+export function ColumnGrid({
   children,
   width = 0,
   smWidth = 0,
@@ -10,7 +10,7 @@ export function Column({
 }) {
   return (
     <div
-      className={`${styles.column} ${styles[`column_${width}`]} ${
+      className={`${styles.columngrid} ${styles[`column_${width}`]} ${
         styles[`columnsm_${smWidth}`]
       } ${styles[`columnmd_${mdWidth}`]} ${styles[`columnlg_${lgWidth}`]} ${
         styles[`columnxl_${xlWidth}`]

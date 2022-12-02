@@ -1,10 +1,11 @@
 .info_block {
   margin: 0 10px;
   padding: 10px;
-  border: 1px solid var(--adsai-medium-blue);
+  border: 2px solid var(--adsai-medium-blue);
   background-color: var(--adsai-light-blue);
   border-radius: 10px;
   height: 100%;
+  text-align: center;
 }
 
 .info_block_brand {
@@ -15,5 +16,4 @@
 .info_block_error {
   border-color: var(--adsai-medium-pink);
   background-color: var(--adsai-light-pink);
-
 }

@@ -1,19 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
 
 html,
 body {
   padding: 0;
   margin: 0;
-  height: 100%;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
 }
 
 :root {
-  --adsai-light-pink:#efc6c4;
-  --adsai-medium-pink:#ce4942;
-  --adsai-light-blue:#b3e8f0;
-  --adsai-medium-blue:#07b4ce;
-  --adsai-dark-blue:#39445A;
+  --adsai-light-pink: #efc6c4;
+  --adsai-medium-pink: #ce4942;
+  --adsai-light-blue: #b3e8f0;
+  --adsai-medium-blue: #07b4ce;
+  --adsai-dark-blue: #39445a;
 }
 
 a {
