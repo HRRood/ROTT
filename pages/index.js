@@ -51,11 +51,6 @@ export default function Home({ userData }) {
             <p className={styles.sub_title}>Opdracht Streak</p>
             <ScoreNumber score={user?.AssignmentStreak} unit={""}></ScoreNumber>
           </Block>
-
-          <Block>
-            <p className={styles.sub_title}>Login Streak</p>
-            <ScoreNumber score={user?.LoginStreak} unit={"weken"}></ScoreNumber>
-          </Block>
         </ColumnGrid>
 
         {/* Center block */}
@@ -104,7 +99,13 @@ export default function Home({ userData }) {
       </Row>
 
       <Row>
-        <Column width={100}>
+        <ColumnGrid width={100} smWidth={33} lgWidth={20}>
+          <Block>
+            <p className={styles.sub_title}>Login Streak</p>
+            <ScoreNumber score={user?.LoginStreak} unit={"weken"}></ScoreNumber>
+          </Block>
+        </ColumnGrid>
+        <Column width={100} smWidth={67} lgWidth={80}>
           <Block>
             <p className={styles.sub_title}>Voortgang</p>
           </Block>

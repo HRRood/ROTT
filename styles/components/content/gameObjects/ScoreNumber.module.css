@@ -2,8 +2,7 @@
   text-align: center;
   font-size: xx-large;
   font-weight: bold;
-  margin-bottom: 10px;
-  padding-bottom: 40px;
+  padding: 20px;
 }
 
 .scorenumberContent {
@@ -12,7 +11,7 @@
 }
 
 .scorenumberUnit {
-  font-size: medium;
+  font-size: large;
   margin: 0;
   padding: 0;
 }
