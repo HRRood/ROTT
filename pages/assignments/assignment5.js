@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable, resetServerContext } from "react-beautiful-dnd";
 import DragItem from "../../components/draggable/DragItem";
 
@@ -86,7 +86,12 @@ export default function AssignmentFive() {
   const addItemToGivenList = (listIndex) => {
     const newState = [...draggableGroupItems];
     const randString = randomStringGenertor();
-    newState[listIndex].push({ id: randString });
+
+    const hasUnfilledHour = newState[listIndex].some((item) => !item.time);
+    if (hasUnfilledHour) {
+      return;
+    }
+    newState[listIndex].push({ id: randString, activityName: "", time: "" });
     setDraggableGroupItems(newState);
   };
 
@@ -103,30 +108,53 @@ export default function AssignmentFive() {
   return (
     <div style={{ display: "flex", gap: "5px" }}>
       <DragDropContext onDragEnd={onDragEnd}>
-        {draggableGroupItems.map((draggableGroupItem, index) => (
-          <Droppable droppableId={index.toString()} key={index}>
-            {(provided, snapshot) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                style={{ ...getListStyle(snapshot.isDraggingOver), display: "flex", flexDirection: "column", justifyContent: "space-between" }}
-              >
-                <h3 style={{ textAlign: "center" }}>{days[index]}</h3>
-                <div style={{ flex: "1" }}>
-                  {draggableGroupItem.map((item, itemIndex) => (
-                    <Draggable key={item.id} draggableId={item.id} index={itemIndex}>
-                      {(provided, snapshot) => (
-                        <DragItem item={item} provided={provided} snapshot={snapshot} setItemData={(data) => setItemInGroup(index, itemIndex, data)} />
-                      )}
-                    </Draggable>
-                  ))}
+        {draggableGroupItems.map((draggableGroupItem, index) => {
+          const hasUnfilledHour = draggableGroupItem.some((item) => !item || !item.time || !item.activityName);
+          const totalHoursFilled = draggableGroupItem.reduce((acc, cur) => (cur ? acc + parseFloat(cur.time || 0) : 0), 0);
+
+          const hoursLeft = 10 - totalHoursFilled;
+          return (
+            <Droppable droppableId={index.toString()} key={index}>
+              {(provided, snapshot) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  style={{
+                    ...getListStyle(snapshot.isDraggingOver),
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    textAlign: "center",
+                  }}
+                >
+                  <div style={{ margin: "5px" }}>
+                    <h3 style={{ margin: 0, padding: 0 }}>{days[index]}</h3>
+                    <p style={{ margin: 0, padding: 0 }}>{hoursLeft} uur intevullen</p>
+                  </div>
+                  <div style={{ flex: "1" }}>
+                    {draggableGroupItem.map((item, itemIndex) => {
+                      return (
+                        <Draggable key={item.id} draggableId={item.id} index={item.id}>
+                          {(provided, snapshot) => (
+                            <DragItem
+                              item={item}
+                              hoursLeft={hoursLeft}
+                              provided={provided}
+                              snapshot={snapshot}
+                              setItemData={(data) => setItemInGroup(index, itemIndex, data)}
+                            />
+                          )}
+                        </Draggable>
+                      );
+                    })}
+                  </div>
+                  {provided.placeholder}
+                  {hoursLeft > 0 && !hasUnfilledHour && <button onClick={() => addItemToGivenList(index)}>Add</button>}
                 </div>
-                {provided.placeholder}
-                <button onClick={() => addItemToGivenList(index)}>Add</button>
-              </div>
-            )}
-          </Droppable>
-        ))}
+              )}
+            </Droppable>
+          );
+        })}
       </DragDropContext>
     </div>
   );
