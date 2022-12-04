@@ -16,7 +16,7 @@ export default function DragItem({ item, provided, snapshot, setItemData, hoursL
       style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
     >
       <select onChange={handleInputChange} value={item.activityName}>
-        <option disabled>Kies een activiteit</option>
+        <option disabled value="">Kies een activiteit</option>
         {activities.map((activity, index) => (
           <option value={activity} key={index}>
             {activity}
