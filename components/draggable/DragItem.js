@@ -1,10 +1,55 @@
 import { getItemStyle } from "../assignments/AssignmentWeekFifteen";
+import Select from "react-select";
 
-const activities = ["Hond Uitlaten", "Leren", "Uitgaan", "Wandelen", "Winkelen", "Werk", "Sporten", "Koken"];
+import styles from "../../styles/components/draggable/DragItem.module.css";
+import Input from "../form/Input";
+
+const activities = [
+  {
+    value: "leren",
+    label: "Leren",
+  },
+  {
+    value: "school",
+    label: "School",
+  },
+  {
+    value: "werk",
+    label: "Werk",
+  },
+  {
+    value: "sport",
+    label: "Sport",
+  },
+  {
+    value: "uitgaan",
+    label: "Uitgaan",
+  },
+  {
+    value: "ontspanning",
+    label: "Ontspanning",
+  },
+  {
+    value: "reistijd",
+    label: "Reistijd",
+  },
+  {
+    value: "winkelen",
+    label: "Winkelen",
+  },
+  {
+    value: "huisdieren-verzorgen",
+    label: "Huisdieren verzorgen",
+  },
+  {
+    value: "Huishouden-koken",
+    label: "Huishouden, koken",
+  },
+];
 
 export default function DragItem({ item, provided, snapshot, setItemData, hoursLeft }) {
-  const handleInputChange = (e) => {
-    const { value } = e.target;
+  const handleInputChange = (obj) => {
+    const { value } = obj;
     setItemData({ ...item, activityName: value });
   };
 
@@ -15,31 +60,30 @@ export default function DragItem({ item, provided, snapshot, setItemData, hoursL
       {...provided.dragHandleProps}
       style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
     >
-      <select onChange={handleInputChange} value={item.activityName}>
-        <option disabled value="">
-          Kies een activiteit
-        </option>
-        {activities.map((activity, index) => (
-          <option value={activity} key={index}>
-            {activity}
-          </option>
-        ))}
-      </select>
-      <div style={{ display: "flex", gap: "10px" }}>
-        <input
-          type="number"
+      <div>
+        <Select
+          options={activities}
+          isClearable={true}
+          name="activity"
+          isSearchable={true}
+          placeholder="Activiteit"
+          onChange={handleInputChange}
+        />
+      </div>
+
+      <div className={styles.inputcontainer}>
+        <Input
+          type="string"
+          label="Aantal uur"
           value={item.time}
+          classname={styles.input}
           onChange={(e) => {
-            console.log(e.target.value, hoursLeft);
-            if (parseFloat(e.target.value || 0) - parseFloat(item.time || 0) > hoursLeft) {
-              setItemData({ ...item, time: hoursLeft });
-              return;
-            }
-            setItemData({ ...item, time: e.target.value });
+            if (parseFloat(e.target.value || 0) < 0) return;
+            if (parseFloat(e.target.value || 0) - parseFloat(item.time || 0) > hoursLeft) return;
+
+            setItemData({ ...item, time: e.target.value.replace(/\D/g, "") });
           }}
-          style={{ width: "70%" }}
-        />{" "}
-        <span>Uur</span>
+        />
       </div>
     </div>
   );

@@ -3,10 +3,10 @@
   display:block;
   width:100%;
   padding: 10px 20px;
-  background: var(--adsai-light-blue);
+  background: #f7f7f7;
   color: var(--adsai-dark-blue);
   border: none;
-  border-bottom: 2px solid var(--adsai-medium-blue);
+  border-bottom: 2px solid var(--adsai-dark-blue-light);
   border-radius: 4px;
   box-sizing: border-box;
 }
@@ -14,7 +14,7 @@
 .input:not(:placeholder-shown),
 .input:focus {
   outline: none;
-  border-bottom: 2px solid var(--adsai-medium-blue);
+  border-bottom: 2px solid var(--adsai-dark-blue);
 }
 
 .input:not(:placeholder-shown) ~ .label,

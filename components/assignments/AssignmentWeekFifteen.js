@@ -21,16 +21,25 @@ export const getItemStyle = (isDragging, draggableStyle) => ({
   margin: `0 0 ${grid}px 0`,
 
   // change background colour if dragging
-  background: isDragging ? "#CCDC9F" : "grey",
+  background: isDragging ? "#07b4ce" : "#5a6783",
+  border: "1px solid #39445a",
+  color: "black",
 
   // styles we need to apply on draggables
   ...draggableStyle,
 });
 
 const getListStyle = (isDraggingOver) => ({
-  background: isDraggingOver ? "#dedede" : "lightgrey",
+  background: isDraggingOver ? "#5a6783" : "#39445a",
   padding: grid,
   width: 250,
+  color: "white",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  textAlign: "center",
+  minWidth: "250px",
+  flex: 1,
 });
 export function AssignmentWeekFifteen() {
   const [draggableGroupItems, setDraggableGroupItems] = useState([[], [], [], [], [], [], []]);
@@ -59,8 +68,6 @@ export function AssignmentWeekFifteen() {
 
   const onDragEnd = (result) => {
     const { source, destination } = result;
-
-    console.log(source, destination);
 
     // dropped outside the list
     if (!destination) {
@@ -121,10 +128,6 @@ export function AssignmentWeekFifteen() {
                 ref={provided.innerRef}
                 style={{
                   ...getListStyle(snapshot.isDraggingOver),
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  textAlign: "center",
                 }}
               >
                 <div style={{ margin: "5px" }}>
@@ -134,7 +137,7 @@ export function AssignmentWeekFifteen() {
                 <div style={{ flex: "1" }}>
                   {draggableGroupItem.map((item, itemIndex) => {
                     return (
-                      <Draggable key={item.id} draggableId={item.id} index={item.id}>
+                      <Draggable key={item.id} draggableId={item.id} index={itemIndex}>
                         {(provided, snapshot) => (
                           <DragItem
                             item={item}

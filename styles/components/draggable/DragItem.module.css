@@ -1,0 +1,26 @@
+.select {
+  /* box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); */
+  cursor: pointer;
+  display: block;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+
+  font-size:14px;
+  width:100%;
+  padding: 10px 20px;
+  background: #f7f7f7;
+  color: var(--adsai-dark-blue);
+  border: none;
+  border-bottom: 2px solid var(--adsai-dark-blue);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.inputcontainer {
+  margin-top: 10px;
+  padding-top: 20px ;
+}
+
+.inputcontainer label {
+  color: white;
+}
