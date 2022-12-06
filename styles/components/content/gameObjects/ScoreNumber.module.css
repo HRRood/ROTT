@@ -1,0 +1,17 @@
+.scorenumberDiv {
+  text-align: center;
+  font-size: xx-large;
+  font-weight: bold;
+  padding: 20px;
+}
+
+.scorenumberContent {
+  margin: 0;
+  padding: 10px 0px 10px;
+}
+
+.scorenumberUnit {
+  font-size: large;
+  margin: 0;
+  padding: 0;
+}

@@ -3,6 +3,12 @@
 }
 
 .title {
+  font-size: 36px;
+  text-align: center;
+  margin: 0;
+}
+
+.sub_title {
   font-size: 24px;
   text-align: center;
   margin: 0;
@@ -14,4 +20,10 @@
 
 .assignments_list li {
   padding: 10px 5px;
+}
+
+.badgeGrid {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  gap: 5%;
 }
