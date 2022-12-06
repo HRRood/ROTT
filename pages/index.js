@@ -90,7 +90,11 @@ export default function Home({ userData }) {
               <li>Hoofdstuk 2 - Samenwerken</li>
               <li>Hoofdstuk 3 - Communiceren</li>
               <li>Hoofdstuk 4 - Methodisch werken</li>
-              <li>Hoofdstuk 5 - Prioriteiten stellen</li>
+              <li>
+                <a href="/assignments/assignmentweekfifteen">
+                  Hoofdstuk 5 - Prioriteiten stellen
+                </a>
+              </li>
               <li>Hoofdstuk 6 - Plannen</li>
               <li>Hoofdstuk 7 - Taalvaardigheid</li>
             </ul>
