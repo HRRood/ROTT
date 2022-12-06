@@ -49,6 +49,7 @@ const activities = [
 
 export default function DragItem({ item, provided, snapshot, setItemData, hoursLeft }) {
   const handleInputChange = (obj) => {
+    if (obj === null) return setItemData({ ...item, activityName: "" });
     const { value } = obj;
     setItemData({ ...item, activityName: value });
   };
@@ -61,14 +62,7 @@ export default function DragItem({ item, provided, snapshot, setItemData, hoursL
       style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
     >
       <div>
-        <Select
-          options={activities}
-          isClearable={true}
-          name="activity"
-          isSearchable={true}
-          placeholder="Activiteit"
-          onChange={handleInputChange}
-        />
+        <Select options={activities} isClearable={true} name="activity" isSearchable={true} placeholder="Activiteit" onChange={handleInputChange} />
       </div>
 
       <div className={styles.inputcontainer}>
