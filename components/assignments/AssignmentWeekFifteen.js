@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { DragDropContext, Draggable, Droppable, resetServerContext } from "react-beautiful-dnd";
+import { useState } from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import DragItem from "../../components/draggable/DragItem";
 
 const grid = 8;
@@ -32,8 +32,7 @@ const getListStyle = (isDraggingOver) => ({
   padding: grid,
   width: 250,
 });
-
-export default function AssignmentFive() {
+export function AssignmentWeekFifteen() {
   const [draggableGroupItems, setDraggableGroupItems] = useState([[], [], [], [], [], [], []]);
 
   const reorder = (list, startIndex, endIndex) => {
@@ -60,6 +59,8 @@ export default function AssignmentFive() {
 
   const onDragEnd = (result) => {
     const { source, destination } = result;
+
+    console.log(source, destination);
 
     // dropped outside the list
     if (!destination) {
@@ -106,61 +107,54 @@ export default function AssignmentFive() {
   };
 
   return (
-    <div style={{ display: "flex", gap: "5px" }}>
-      <DragDropContext onDragEnd={onDragEnd}>
-        {draggableGroupItems.map((draggableGroupItem, index) => {
-          const hasUnfilledHour = draggableGroupItem.some((item) => !item || !item.time || !item.activityName);
-          const totalHoursFilled = draggableGroupItem.reduce((acc, cur) => (cur ? acc + parseFloat(cur.time || 0) : 0), 0);
+    <DragDropContext onDragEnd={onDragEnd}>
+      {draggableGroupItems.map((draggableGroupItem, index) => {
+        const hasUnfilledHour = draggableGroupItem.some((item) => !item || !item.time || !item.activityName);
+        const totalHoursFilled = draggableGroupItem.reduce((acc, cur) => (cur ? acc + parseFloat(cur.time || 0) : 0), 0);
 
-          const hoursLeft = 10 - totalHoursFilled;
-          return (
-            <Droppable droppableId={index.toString()} key={index}>
-              {(provided, snapshot) => (
-                <div
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  style={{
-                    ...getListStyle(snapshot.isDraggingOver),
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    textAlign: "center",
-                  }}
-                >
-                  <div style={{ margin: "5px" }}>
-                    <h3 style={{ margin: 0, padding: 0 }}>{days[index]}</h3>
-                    <p style={{ margin: 0, padding: 0 }}>{hoursLeft} uur intevullen</p>
-                  </div>
-                  <div style={{ flex: "1" }}>
-                    {draggableGroupItem.map((item, itemIndex) => {
-                      return (
-                        <Draggable key={item.id} draggableId={item.id} index={item.id}>
-                          {(provided, snapshot) => (
-                            <DragItem
-                              item={item}
-                              hoursLeft={hoursLeft}
-                              provided={provided}
-                              snapshot={snapshot}
-                              setItemData={(data) => setItemInGroup(index, itemIndex, data)}
-                            />
-                          )}
-                        </Draggable>
-                      );
-                    })}
-                  </div>
-                  {provided.placeholder}
-                  {hoursLeft > 0 && !hasUnfilledHour && <button onClick={() => addItemToGivenList(index)}>Add</button>}
+        const hoursLeft = 10 - totalHoursFilled;
+        return (
+          <Droppable droppableId={index.toString()} key={index}>
+            {(provided, snapshot) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                style={{
+                  ...getListStyle(snapshot.isDraggingOver),
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  textAlign: "center",
+                }}
+              >
+                <div style={{ margin: "5px" }}>
+                  <h3 style={{ margin: 0, padding: 0 }}>{days[index]}</h3>
+                  <p style={{ margin: 0, padding: 0 }}>{hoursLeft} uur intevullen</p>
                 </div>
-              )}
-            </Droppable>
-          );
-        })}
-      </DragDropContext>
-    </div>
+                <div style={{ flex: "1" }}>
+                  {draggableGroupItem.map((item, itemIndex) => {
+                    return (
+                      <Draggable key={item.id} draggableId={item.id} index={item.id}>
+                        {(provided, snapshot) => (
+                          <DragItem
+                            item={item}
+                            hoursLeft={hoursLeft}
+                            provided={provided}
+                            snapshot={snapshot}
+                            setItemData={(data) => setItemInGroup(index, itemIndex, data)}
+                          />
+                        )}
+                      </Draggable>
+                    );
+                  })}
+                </div>
+                {provided.placeholder}
+                {hoursLeft > 0 && !hasUnfilledHour && <button onClick={() => addItemToGivenList(index)}>Add</button>}
+              </div>
+            )}
+          </Droppable>
+        );
+      })}
+    </DragDropContext>
   );
 }
-export const getServerSideProps = async ({ query }) => {
-  resetServerContext(); // <-- CALL RESET SERVER CONTEXT, SERVER SIDE
-
-  return { props: { data: [] } };
-};

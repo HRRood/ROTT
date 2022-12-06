@@ -1,4 +1,4 @@
-import { getItemStyle } from "../../pages/assignments/assignment5";
+import { getItemStyle } from "../assignments/AssignmentWeekFifteen";
 
 const activities = ["Hond Uitlaten", "Leren", "Uitgaan", "Wandelen", "Winkelen", "Werk", "Sporten", "Koken"];
 
@@ -16,7 +16,9 @@ export default function DragItem({ item, provided, snapshot, setItemData, hoursL
       style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
     >
       <select onChange={handleInputChange} value={item.activityName}>
-        <option disabled value="">Kies een activiteit</option>
+        <option disabled value="">
+          Kies een activiteit
+        </option>
         {activities.map((activity, index) => (
           <option value={activity} key={index}>
             {activity}
