@@ -6,10 +6,11 @@ export function AssignmentList() {
 
   let chapters = [];
   for (let i = 0; i < 7; i++) {
+    const chapterKey = `chapterKey_${data.AssignmentList[i].Id}`;
     let chapter;
     if (i === 4) {
       chapter = (
-        <li>
+        <li key={chapterKey}>
           <a href="/assignments/assignmentweekfifteen">
             {data.AssignmentList[i].Name}
           </a>
