@@ -19,7 +19,7 @@ import badge2 from "../images/gamification_icons/badge2.png";
 import badge3 from "../images/gamification_icons/badge3.png";
 import badge4 from "../images/gamification_icons/badge4.png";
 import { ScoreNumber } from "../components/content/ScoreNumber";
-import { Progressbar } from "../components/progressbar/Progressbar";
+import { Progressbar } from "../components/Progress/Progressbar";
 
 export default function Home({ userData }) {
   const [user, setUser] = useUserContext();
