@@ -19,6 +19,7 @@ import badge2 from "../images/gamification_icons/badge2.png";
 import badge3 from "../images/gamification_icons/badge3.png";
 import badge4 from "../images/gamification_icons/badge4.png";
 import { ScoreNumber } from "../components/content/ScoreNumber";
+import { Progressbar } from "../components/progressbar/Progressbar";
 
 export default function Home({ userData }) {
   const [user, setUser] = useUserContext();
@@ -112,6 +113,7 @@ export default function Home({ userData }) {
         <Column width={100} smWidth={67} lgWidth={80}>
           <Block>
             <p className={styles.sub_title}>Voortgang</p>
+            <Progressbar></Progressbar>
           </Block>
         </Column>
       </Row>
