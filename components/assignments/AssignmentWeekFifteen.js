@@ -19,30 +19,45 @@ export const getItemStyle = (isDragging, draggableStyle) => ({
   userSelect: "none",
   padding: grid * 2,
   margin: `0 0 ${grid}px 0`,
+  borderRadius: "10px",
 
   // change background colour if dragging
-  background: isDragging ? "#07b4ce" : "#5a6783",
-  border: "1px solid #39445a",
+  background: isDragging
+    ? "var(--adsai-medium-blue)"
+    : "var(--adsai-light-blue)",
+  border: "1px solid var(--adsai-medium-blue)",
   color: "black",
+  boxShadow: isDragging ? "rgba(0, 0, 0, 0.5) 0px 3px 12px" : "none",
 
   // styles we need to apply on draggables
   ...draggableStyle,
 });
 
 const getListStyle = (isDraggingOver) => ({
-  background: isDraggingOver ? "#5a6783" : "#39445a",
+  background: isDraggingOver ? "var(--adsai-light-blue)" : "white",
   padding: grid,
   width: 250,
-  color: "white",
+  color: "var(--adsai-dark-blue)",
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
   textAlign: "center",
   minWidth: "250px",
   flex: 1,
+  borderRadius: "10px",
+  boxShadow: "rgba(0, 0, 0, 0.09) 0px 3px 6px",
+  border: "1px solid rgba(0, 0, 0, 0.1)",
 });
 export function AssignmentWeekFifteen() {
-  const [draggableGroupItems, setDraggableGroupItems] = useState([[], [], [], [], [], [], []]);
+  const [draggableGroupItems, setDraggableGroupItems] = useState([
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+  ]);
 
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -77,12 +92,21 @@ export function AssignmentWeekFifteen() {
     const dInd = +destination.droppableId;
 
     if (sInd === dInd) {
-      const items = reorder(draggableGroupItems[sInd], source.index, destination.index);
+      const items = reorder(
+        draggableGroupItems[sInd],
+        source.index,
+        destination.index
+      );
       const newState = [...draggableGroupItems];
       newState[sInd] = items;
       setDraggableGroupItems(newState);
     } else {
-      const result = move(draggableGroupItems[sInd], draggableGroupItems[dInd], source, destination);
+      const result = move(
+        draggableGroupItems[sInd],
+        draggableGroupItems[dInd],
+        source,
+        destination
+      );
       const newState = [...draggableGroupItems];
       newState[sInd] = result[sInd] || [];
       newState[dInd] = result[dInd] || [];
@@ -116,8 +140,13 @@ export function AssignmentWeekFifteen() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       {draggableGroupItems.map((draggableGroupItem, index) => {
-        const hasUnfilledHour = draggableGroupItem.some((item) => !item || !item.time || !item.activityName);
-        const totalHoursFilled = draggableGroupItem.reduce((acc, cur) => (cur ? acc + parseFloat(cur.time || 0) : 0), 0);
+        const hasUnfilledHour = draggableGroupItem.some(
+          (item) => !item || !item.time || !item.activityName
+        );
+        const totalHoursFilled = draggableGroupItem.reduce(
+          (acc, cur) => (cur ? acc + parseFloat(cur.time || 0) : 0),
+          0
+        );
 
         const hoursLeft = 10 - totalHoursFilled;
         return (
@@ -132,19 +161,27 @@ export function AssignmentWeekFifteen() {
               >
                 <div style={{ margin: "5px" }}>
                   <h3 style={{ margin: 0, padding: 0 }}>{days[index]}</h3>
-                  <p style={{ margin: 0, padding: 0 }}>{hoursLeft} uur intevullen</p>
+                  <p style={{ margin: 0, padding: 0 }}>
+                    {hoursLeft} uur intevullen
+                  </p>
                 </div>
                 <div style={{ flex: "1" }}>
                   {draggableGroupItem.map((item, itemIndex) => {
                     return (
-                      <Draggable key={item.id} draggableId={item.id} index={itemIndex}>
+                      <Draggable
+                        key={item.id}
+                        draggableId={item.id}
+                        index={itemIndex}
+                      >
                         {(provided, snapshot) => (
                           <DragItem
                             item={item}
                             hoursLeft={hoursLeft}
                             provided={provided}
                             snapshot={snapshot}
-                            setItemData={(data) => setItemInGroup(index, itemIndex, data)}
+                            setItemData={(data) =>
+                              setItemInGroup(index, itemIndex, data)
+                            }
                           />
                         )}
                       </Draggable>
@@ -152,7 +189,18 @@ export function AssignmentWeekFifteen() {
                   })}
                 </div>
                 {provided.placeholder}
-                {hoursLeft > 0 && !hasUnfilledHour && <button onClick={() => addItemToGivenList(index)}>Add</button>}
+                {hoursLeft > 0 && !hasUnfilledHour && (
+                  <button
+                    style={{
+                      borderRadius: "4px",
+                      borderStyle: "none",
+                      height: "20px",
+                    }}
+                    onClick={() => addItemToGivenList(index)}
+                  >
+                    Toevoegen
+                  </button>
+                )}
               </div>
             )}
           </Droppable>
