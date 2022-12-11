@@ -162,7 +162,7 @@ export function AssignmentWeekFifteen() {
                 <div style={{ margin: "5px" }}>
                   <h3 style={{ margin: 0, padding: 0 }}>{days[index]}</h3>
                   <p style={{ margin: 0, padding: 0 }}>
-                    {hoursLeft} uur intevullen
+                    {hoursLeft} uur in te vullen
                   </p>
                 </div>
                 <div style={{ flex: "1" }}>
