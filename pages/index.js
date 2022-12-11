@@ -19,6 +19,8 @@ import badge2 from "../images/gamification_icons/badge2.png";
 import badge3 from "../images/gamification_icons/badge3.png";
 import badge4 from "../images/gamification_icons/badge4.png";
 import { ScoreNumber } from "../components/content/ScoreNumber";
+import { Progressbar } from "../components/Progress/Progressbar";
+import { AssignmentList } from "../components/content/AssignmentList";
 
 export default function Home({ userData }) {
   const [user, setUser] = useUserContext();
@@ -85,17 +87,7 @@ export default function Home({ userData }) {
         <Column width={100} smWidth={33} lgWidth={30}>
           <Block>
             <p className={styles.sub_title}>Opdrachten</p>
-            <ul className={styles.assignments_list}>
-              <li>Hoofdstuk 1 - Leren leren</li>
-              <li>Hoofdstuk 2 - Samenwerken</li>
-              <li>Hoofdstuk 3 - Communiceren</li>
-              <li>Hoofdstuk 4 - Methodisch werken</li>
-              <li>
-                <a href="/assignments/assignmentweekfifteen">Hoofdstuk 5 - Prioriteiten stellen</a>
-              </li>
-              <li>Hoofdstuk 6 - Plannen</li>
-              <li>Hoofdstuk 7 - Taalvaardigheid</li>
-            </ul>
+            <AssignmentList></AssignmentList>
           </Block>
         </Column>
       </Row>
@@ -110,6 +102,7 @@ export default function Home({ userData }) {
         <Column width={100} smWidth={67} lgWidth={80}>
           <Block>
             <p className={styles.sub_title}>Voortgang</p>
+            <Progressbar></Progressbar>
           </Block>
         </Column>
       </Row>

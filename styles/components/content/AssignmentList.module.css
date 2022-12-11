@@ -1,0 +1,7 @@
+.assignments_list {
+  list-style: none;
+}
+
+.assignments_list li {
+  padding: 10px 5px;
+}

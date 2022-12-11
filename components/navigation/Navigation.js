@@ -17,13 +17,20 @@ export default function Navigation() {
       <div className={styles.navigation_container}>
         <div>
           <Link href="/">
-            <Image className={styles.navigation_image} src={BrandImg} alt="ADSAI" />
+            <Image
+              className={styles.navigation_image}
+              src={BrandImg}
+              alt="ADSAI"
+              priority={1}
+            />
           </Link>
         </div>
         <ul className={styles.navigation_items}>
           {user?.isLoggedIn ? (
             <>
-              <li className={`${styles.navigation_icon} ${styles.navigation_item}`}>
+              <li
+                className={`${styles.navigation_icon} ${styles.navigation_item}`}
+              >
                 <IoStatsChartOutline size={40} />
               </li>
               <li className={styles.navigation_item}>

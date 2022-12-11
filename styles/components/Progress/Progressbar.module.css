@@ -1,0 +1,39 @@
+.progressbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.progressbar_assignment {
+  display: flex;
+  text-align: center;
+  flex-direction: column-reverse;
+}
+
+.progressbar > div {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  margin-top: auto;
+  padding-bottom: 10px;
+}
+
+.progressbar_title {
+  font-size: 9pt;
+  margin: 10px 10px 10px 0px;
+}
+
+.progressbar_sub_assignment_true,
+.progressbar_sub_assignment_false {
+  text-align: center;
+  font-size: 46pt;
+  margin: -31px;
+}
+
+.progressbar_sub_assignment_true {
+  color: #41e733;
+}
+
+.progressbar_sub_assignment_false {
+  color: #c5c5c5;
+}
