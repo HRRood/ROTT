@@ -87,7 +87,7 @@ export default function Home({ userData }) {
         <Column width={100} smWidth={33} lgWidth={30}>
           <Block>
             <p className={styles.sub_title}>Opdrachten</p>
-            <AssignmentList></AssignmentList>
+            <AssignmentList />
           </Block>
         </Column>
       </Row>
@@ -102,7 +102,7 @@ export default function Home({ userData }) {
         <Column width={100} smWidth={67} lgWidth={80}>
           <Block>
             <p className={styles.sub_title}>Voortgang</p>
-            <Progressbar></Progressbar>
+            <Progressbar />
           </Block>
         </Column>
       </Row>
