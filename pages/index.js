@@ -91,9 +91,7 @@ export default function Home({ userData }) {
               <li>Hoofdstuk 3 - Communiceren</li>
               <li>Hoofdstuk 4 - Methodisch werken</li>
               <li>
-                <a href="/assignments/assignmentweekfifteen">
-                  Hoofdstuk 5 - Prioriteiten stellen
-                </a>
+                <a href="/assignments/assignmentweekfifteen">Hoofdstuk 5 - Prioriteiten stellen</a>
               </li>
               <li>Hoofdstuk 6 - Plannen</li>
               <li>Hoofdstuk 7 - Taalvaardigheid</li>
@@ -119,10 +117,7 @@ export default function Home({ userData }) {
   );
 }
 
-export const getServerSideProps = withIronSessionSsr(async function ({
-  req,
-  res,
-}) {
+export const getServerSideProps = withIronSessionSsr(async function ({ req, res }) {
   if (!isUserLoggedIn(req)) {
     res.setHeader("location", "/login");
     res.statusCode = 302;
@@ -144,9 +139,9 @@ export const getServerSideProps = withIronSessionSsr(async function ({
     };
   }
 
+  console.log(response);
   const userMapped = mapUserData(response.data);
   return {
     props: { userData: { ...req.session.user, ...userMapped } },
   };
-},
-sessionOptions);
+}, sessionOptions);

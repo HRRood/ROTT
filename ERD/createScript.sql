@@ -115,35 +115,13 @@ CREATE TABLE IF NOT EXISTS `rottprototype`.`User_Assignment` (
   `User_id` INT NOT NULL,
   `Assignment_id` INT NOT NULL,
   `Achieved` INT NULL DEFAULT '0',
+  `answer` MEDIUMTEXT NULL DEFAULT NULL,
   PRIMARY KEY (`User_id`, `Assignment_id`),
   INDEX `Constr_User_assignment_Assignment_fk_idx` (`Assignment_id` ASC) VISIBLE,
   CONSTRAINT `Constr_User_assignment_Assignment_fk`
     FOREIGN KEY (`Assignment_id`)
     REFERENCES `rottprototype`.`Assignment` (`Id`),
   CONSTRAINT `Constr_User_assignment_User_fk`
-    FOREIGN KEY (`User_id`)
-    REFERENCES `rottprototype`.`User` (`Id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `rottprototype`.`User_Assignment_Answer`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `rottprototype`.`User_Assignment_Answer` (
-  `Id` INT NOT NULL AUTO_INCREMENT,
-  `User_id` INT NOT NULL,
-  `Assignment_id` INT NOT NULL,
-  `Answer` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`Id`),
-  UNIQUE INDEX `Id_UNIQUE` (`Id` ASC) VISIBLE,
-  INDEX `Constr_UserAssignmentAnswer_User_fk_idx` (`User_id` ASC) VISIBLE,
-  INDEX `Constr_UserAssignmentAnswer_Assignment_fk_idx` (`Assignment_id` ASC) VISIBLE,
-  CONSTRAINT `Constr_UserAssignmentAnswer_Assignment_fk`
-    FOREIGN KEY (`Assignment_id`)
-    REFERENCES `rottprototype`.`Assignment` (`Id`),
-  CONSTRAINT `Constr_UserAssignmentAnswer_User_fk`
     FOREIGN KEY (`User_id`)
     REFERENCES `rottprototype`.`User` (`Id`))
 ENGINE = InnoDB

@@ -2,8 +2,19 @@ import { AssignmentWeekFifteen } from "../../components/assignments/AssignmentWe
 import { resetServerContext } from "react-beautiful-dnd";
 import { Row } from "../../components/content/Row";
 import { Column } from "../../components/content/Column";
+import { withIronSessionSsr } from "iron-session/next";
+import { getUserById, mapUserData } from "../api/user/[id]";
+import { sessionOptions } from "../../lib/session";
+import isUserLoggedIn from "../../utils/is-user-logged-in";
+import { useUserContext } from "../../context/user";
+import { useEffect } from "react";
 
-export default function AssignmentWeekFifteenPage() {
+export default function AssignmentWeekFifteenPage({ userData }) {
+  const [user, setUser] = useUserContext();
+
+  useEffect(() => {
+    setUser(userData);
+  }, [userData]);
   return (
     <div>
       <Row>
@@ -42,14 +53,37 @@ export default function AssignmentWeekFifteenPage() {
           </ol>
         </Column>
       </Row>
-      <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", margin: "0 20px" }}>
-        <AssignmentWeekFifteen />
-      </div>
+      <AssignmentWeekFifteen />
     </div>
   );
 }
-export const getServerSideProps = async ({ query }) => {
+
+export const getServerSideProps = withIronSessionSsr(async function ({ req, res }) {
   resetServerContext();
 
-  return { props: { data: [] } };
-};
+  if (!isUserLoggedIn(req)) {
+    res.setHeader("location", "/login");
+    res.statusCode = 302;
+    res.end();
+    return {
+      props: {
+        userData: { isLoggedIn: false, login: "", avatarUrl: "" },
+      },
+    };
+  }
+
+  const response = await getUserById(req.session.user.Id);
+
+  if (!response.success) {
+    return {
+      props: {
+        userData: { isLoggedIn: false, login: "", avatarUrl: "" },
+      },
+    };
+  }
+
+  const userMapped = mapUserData(response.data);
+  return {
+    props: { userData: { ...req.session.user, ...userMapped } },
+  };
+}, sessionOptions);

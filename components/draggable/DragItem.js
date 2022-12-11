@@ -4,50 +4,66 @@ import Select from "react-select";
 import styles from "../../styles/components/draggable/DragItem.module.css";
 import Input from "../form/Input";
 
-const activities = [
+export const activities = [
   {
     value: "leren",
     label: "Leren",
+    type: "positive",
+    min: 10,
+    max: 20,
   },
   {
     value: "school",
     label: "School",
+    type: "neutral",
   },
   {
     value: "werk",
     label: "Werk",
+    type: "neutral",
   },
   {
     value: "sport",
     label: "Sport",
+    type: "neutral",
   },
   {
     value: "uitgaan",
     label: "Uitgaan",
+    type: "negative",
+    max: 10,
   },
   {
     value: "ontspanning",
     label: "Ontspanning",
+    type: "positive",
+    min: 10,
+    max: 20,
   },
   {
     value: "reistijd",
     label: "Reistijd",
+    type: "neutral",
   },
   {
     value: "winkelen",
     label: "Winkelen",
+    type: "negative",
+    max: 10,
   },
   {
     value: "huisdieren-verzorgen",
     label: "Huisdieren verzorgen",
+    type: "neutral",
   },
   {
-    value: "Huishouden-koken",
+    value: "huishouden-koken",
     label: "Huishouden, koken",
+    type: "neutral",
   },
 ];
 
-export default function DragItem({ item, provided, snapshot, setItemData, hoursLeft }) {
+export default function DragItem({ item, provided, snapshot, setItemData, hoursLeft, removeFromList }) {
   const handleInputChange = (obj) => {
     if (obj === null) return setItemData({ ...item, activityName: item.activityName });
     const { value } = obj;
@@ -61,8 +77,10 @@ export default function DragItem({ item, provided, snapshot, setItemData, hoursL
       {...provided.dragHandleProps}
       style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
     >
+      <div style={{ position: "absolute", top: "5px", right: "5px", color: "white", cursor: "pointer" }} onClick={() => removeFromList()}>
+        x
+      </div>
       <div>
-        {console.log(item)}
         <Select
           options={activities}
           defaultValue={activities.find((activity) => activity.value === item.activityName)}

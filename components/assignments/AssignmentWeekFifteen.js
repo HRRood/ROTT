@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import DragItem from "../../components/draggable/DragItem";
+import DragItem, { activities } from "../../components/draggable/DragItem";
+import Button from "../Button";
 
-const grid = 8;
+const STARTPOINTS = 10;
+
+const grid = 10;
 
 const days = {
   0: "Maandag",
@@ -24,6 +27,7 @@ export const getItemStyle = (isDragging, draggableStyle) => ({
   background: isDragging ? "#07b4ce" : "#5a6783",
   border: "1px solid #39445a",
   color: "black",
+  position: "relative",
 
   // styles we need to apply on draggables
   ...draggableStyle,
@@ -43,6 +47,30 @@ const getListStyle = (isDraggingOver) => ({
 });
 export function AssignmentWeekFifteen() {
   const [draggableGroupItems, setDraggableGroupItems] = useState([[], [], [], [], [], [], []]);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [totalHoursFilled, setTotalHoursFilled] = useState(0);
+  const [pointsLogged, setPointsLogged] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/assignment/1").then((res) => {
+      res.json().then((data) => {
+        if (!data.success || !data.data) return;
+        const { answer } = data.data;
+
+        setHasSubmitted(true);
+        console.log(JSON.parse(answer));
+        setDraggableGroupItems(JSON.parse(answer));
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    const totalHoursFilled = draggableGroupItems.reduce((acc, cur) => {
+      const totalHours = cur.reduce((acc, cur) => (cur ? acc + parseFloat(cur.time || 0) : 0), 0);
+      return acc + totalHours;
+    }, 0);
+    setTotalHoursFilled(totalHoursFilled);
+  }, [draggableGroupItems]);
 
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -113,51 +141,147 @@ export function AssignmentWeekFifteen() {
     setDraggableGroupItems(newState);
   };
 
-  return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      {draggableGroupItems.map((draggableGroupItem, index) => {
-        const hasUnfilledHour = draggableGroupItem.some((item) => !item || !item.time || !item.activityName);
-        const totalHoursFilled = draggableGroupItem.reduce((acc, cur) => (cur ? acc + parseFloat(cur.time || 0) : 0), 0);
+  const removeFromList = (groupIndex, itemIndex) => {
+    const newState = [...draggableGroupItems];
+    newState[groupIndex].splice(itemIndex, 1);
+    setDraggableGroupItems(newState);
+  };
 
-        const hoursLeft = 10 - totalHoursFilled;
-        return (
-          <Droppable droppableId={index.toString()} key={index}>
-            {(provided, snapshot) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                style={{
-                  ...getListStyle(snapshot.isDraggingOver),
-                }}
-              >
-                <div style={{ margin: "5px" }}>
-                  <h3 style={{ margin: 0, padding: 0 }}>{days[index]}</h3>
-                  <p style={{ margin: 0, padding: 0 }}>{hoursLeft} uur intevullen</p>
-                </div>
-                <div style={{ flex: "1" }}>
-                  {draggableGroupItem.map((item, itemIndex) => {
-                    return (
-                      <Draggable key={item.id} draggableId={item.id} index={itemIndex}>
-                        {(provided, snapshot) => (
-                          <DragItem
-                            item={item}
-                            hoursLeft={hoursLeft}
-                            provided={provided}
-                            snapshot={snapshot}
-                            setItemData={(data) => setItemInGroup(index, itemIndex, data)}
-                          />
-                        )}
-                      </Draggable>
-                    );
-                  })}
-                </div>
-                {provided.placeholder}
-                {hoursLeft > 0 && !hasUnfilledHour && <button onClick={() => addItemToGivenList(index)}>Add</button>}
-              </div>
-            )}
-          </Droppable>
-        );
-      })}
-    </DragDropContext>
+  const calculatePoints = () => {
+    // group all activities and total time per activity
+    const groupedActivities = draggableGroupItems.reduce((acc, cur) => {
+      cur.forEach((item) => {
+        if (item && item.activityName) {
+          const activity = acc.find((a) => a.activityName === item.activityName);
+          if (activity) {
+            activity.time += parseFloat(item.time);
+          } else {
+            acc.push({ activityName: item.activityName, time: parseFloat(item.time) });
+          }
+        }
+      });
+      return acc;
+    }, []);
+
+    const pointsLoggedTemp = [];
+    // calculate points per activity
+    const totalPoints = groupedActivities.reduce((acc, cur) => {
+      const activityData = activities.find((a) => a.value === cur.activityName);
+      if (!activityData) return acc;
+
+      if (activityData.type === "neutral") {
+        pointsLoggedTemp.push({ activityName: cur.activityName, message: "Geen punten gegeven neutrale activiteit" });
+        return acc;
+      }
+
+      if (activityData.type === "negative") {
+        if (cur.time > activityData.max) {
+          pointsLoggedTemp.push({ activityName: cur.activityName, message: "-3 punten, teveel tijd besteed aan activiteit" });
+          return acc - 3;
+        }
+
+        pointsLoggedTemp.push({ activityName: cur.activityName, message: "Geen punten gegeven, negatieve activiteit" });
+        return acc;
+      }
+
+      if (activityData.type === "positive") {
+        if (cur.time > activityData.max) {
+          pointsLoggedTemp.push({ activityName: cur.activityName, message: "-2 punten, te veel tijd besteed aan activiteit" });
+          return acc - 2;
+        }
+
+        if (cur.time < activityData.min) {
+          pointsLoggedTemp.push({ activityName: cur.activityName, message: "-1 punt, te weinig tijd besteed aan activiteit" });
+          return acc - 1;
+        }
+
+        pointsLoggedTemp.push({ activityName: cur.activityName, message: "+2 puntent, in de tijd vlak dat word verwacht" });
+        return acc + 2;
+      }
+    }, STARTPOINTS);
+
+    setPointsLogged(pointsLoggedTemp);
+
+    fetch("/api/assignment/submit/1", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        assignmentAnswer: draggableGroupItems,
+        poinstGiven: totalPoints,
+      }),
+    }).then((res) => {
+      console.log("res", res);
+      setHasSubmitted(true);
+    });
+
+    console.log("rororo TOTALPOINTS", groupedActivities, pointsLoggedTemp, totalPoints);
+  };
+
+  return (
+    <>
+      <ul>
+        {pointsLogged.map((item, index) => (
+          <li key={index}>
+            {item.activityName} - {item.message}
+          </li>
+        ))}
+      </ul>
+      <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", margin: "20px 0" }}>
+        <DragDropContext onDragEnd={onDragEnd}>
+          {draggableGroupItems.map((draggableGroupItem, index) => {
+            const hasUnfilledHour = draggableGroupItem.some((item) => !item || !item.time || !item.activityName);
+            const totalHoursFilled = draggableGroupItem.reduce((acc, cur) => (cur ? acc + parseFloat(cur.time || 0) : 0), 0);
+
+            const hoursLeft = 10 - totalHoursFilled;
+            return (
+              <Droppable droppableId={index.toString()} key={index}>
+                {(provided, snapshot) => (
+                  <div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    style={{
+                      ...getListStyle(snapshot.isDraggingOver),
+                    }}
+                  >
+                    <div style={{ margin: "5px" }}>
+                      <h3 style={{ margin: 0, padding: 0 }}>{days[index]}</h3>
+                      <p style={{ margin: 0, padding: 0 }}>{hoursLeft} uur intevullen</p>
+                    </div>
+                    <div style={{ flex: "1" }}>
+                      {draggableGroupItem.map((item, itemIndex) => {
+                        return (
+                          <Draggable key={item.id} draggableId={item.id} index={itemIndex}>
+                            {(provided, snapshot) => (
+                              <DragItem
+                                item={item}
+                                hoursLeft={hoursLeft}
+                                provided={provided}
+                                snapshot={snapshot}
+                                setItemData={(data) => setItemInGroup(index, itemIndex, data)}
+                                removeFromList={() => removeFromList(index, itemIndex)}
+                              />
+                            )}
+                          </Draggable>
+                        );
+                      })}
+                    </div>
+                    {provided.placeholder}
+                    {hoursLeft > 0 && !hasUnfilledHour && <button onClick={() => addItemToGivenList(index)}>Add</button>}
+                  </div>
+                )}
+              </Droppable>
+            );
+          })}
+        </DragDropContext>
+      </div>
+
+      {totalHoursFilled >= 70 && !hasSubmitted && (
+        <div style={{ margin: "10px 0" }}>
+          <Button text="Submit" onClick={calculatePoints} />
+        </div>
+      )}
+    </>
   );
 }

@@ -20,7 +20,7 @@ export async function getUserById(id) {
   }
 
   closeConnection(db);
-  return { success: true, data: rows[0].data };
+  return { success: true, data: rows[0] };
 }
 
 export function mapUserData(user) {
