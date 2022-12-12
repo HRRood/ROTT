@@ -1,0 +1,52 @@
+.chapterFoldOutTitle {
+  cursor: pointer;
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+.chapterFoldOutTitle:hover {
+  background-color: var(--adsai-light-blue);
+}
+
+.chapterFoldOutTitle:active {
+  background-color: var(--adsai-medium-blue);
+}
+
+.subChapterBox {
+  border: solid 1px var(--adsai-medium-blue);
+  border-radius: 0px 0px 5px 5px;
+  margin: 0px;
+}
+
+.subChapterTitle {
+  cursor: pointer;
+  background-color: transparent;
+  padding: 10px;
+  margin: 0px;
+  font-style: italic;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+.subChapterTitle:hover {
+  background-color: var(--adsai-light-blue);
+}
+
+.subChapterTitle:active {
+  background-color: var(--adsai-medium-blue);
+}
+
+.chapterTitleUnfolded {
+  cursor: pointer;
+  background-color: var(--adsai-medium-blue);
+  padding: 10px;
+  border-radius: 5px 5px 0px 0px;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}

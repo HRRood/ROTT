@@ -22,11 +22,15 @@ export const getItemStyle = (isDragging, draggableStyle) => ({
   userSelect: "none",
   padding: grid * 2,
   margin: `0 0 ${grid}px 0`,
+  borderRadius: "10px",
 
   // change background colour if dragging
-  background: isDragging ? "#07b4ce" : "#5a6783",
-  border: "1px solid #39445a",
+  background: isDragging
+    ? "var(--adsai-medium-blue)"
+    : "var(--adsai-light-blue)",
+  border: "1px solid var(--adsai-medium-blue)",
   color: "black",
+  boxShadow: isDragging ? "rgba(0, 0, 0, 0.5) 0px 3px 12px" : "none",
   position: "relative",
 
   // styles we need to apply on draggables
@@ -34,16 +38,19 @@ export const getItemStyle = (isDragging, draggableStyle) => ({
 });
 
 const getListStyle = (isDraggingOver) => ({
-  background: isDraggingOver ? "#5a6783" : "#39445a",
+  background: isDraggingOver ? "var(--adsai-light-blue)" : "white",
   padding: grid,
   width: 250,
-  color: "white",
+  color: "var(--adsai-dark-blue)",
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
   textAlign: "center",
   minWidth: "250px",
   flex: 1,
+  borderRadius: "10px",
+  boxShadow: "rgba(0, 0, 0, 0.09) 0px 3px 6px",
+  border: "1px solid rgba(0, 0, 0, 0.1)",
 });
 export function AssignmentWeekFifteen() {
   const [draggableGroupItems, setDraggableGroupItems] = useState([[], [], [], [], [], [], []]);
@@ -105,12 +112,21 @@ export function AssignmentWeekFifteen() {
     const dInd = +destination.droppableId;
 
     if (sInd === dInd) {
-      const items = reorder(draggableGroupItems[sInd], source.index, destination.index);
+      const items = reorder(
+        draggableGroupItems[sInd],
+        source.index,
+        destination.index
+      );
       const newState = [...draggableGroupItems];
       newState[sInd] = items;
       setDraggableGroupItems(newState);
     } else {
-      const result = move(draggableGroupItems[sInd], draggableGroupItems[dInd], source, destination);
+      const result = move(
+        draggableGroupItems[sInd],
+        draggableGroupItems[dInd],
+        source,
+        destination
+      );
       const newState = [...draggableGroupItems];
       newState[sInd] = result[sInd] || [];
       newState[dInd] = result[dInd] || [];

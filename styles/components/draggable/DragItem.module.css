@@ -5,10 +5,10 @@
   position: relative;
   transition: all 0.2s ease-in-out;
 
-  font-size:14px;
-  width:100%;
+  font-size: 14px;
+  width: 100%;
   padding: 10px 20px;
-  background: #f7f7f7;
+  background: white;
   color: var(--adsai-dark-blue);
   border: none;
   border-bottom: 2px solid var(--adsai-dark-blue);
@@ -18,9 +18,9 @@
 
 .inputcontainer {
   margin-top: 10px;
-  padding-top: 20px ;
+  padding-top: 20px;
 }
 
 .inputcontainer label {
-  color: white;
+  color: var(--adsai-dark-blue);
 }

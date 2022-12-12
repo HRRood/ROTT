@@ -17,7 +17,7 @@ export function AssignmentList() {
         </li>
       );
     } else {
-      chapter = <li>{data.AssignmentList[i].Name}</li>;
+      chapter = <li key={chapterKey}>{data.AssignmentList[i].Name}</li>;
     }
     chapters.push(chapter);
   }
