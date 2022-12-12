@@ -1,0 +1,8 @@
+.alert {
+  border: 1px solid var(--adsai-medium-blue);
+  background: var(--adsai-light-blue);
+  border-radius: 10px;
+  padding: 10px;
+  width: fit-content;
+  margin: 0 auto;
+}

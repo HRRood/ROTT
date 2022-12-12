@@ -25,7 +25,9 @@ export const activities = [
   {
     value: "sport",
     label: "Sport",
-    type: "neutral",
+    type: "positive",
+    min: 0,
+    max: 10,
   },
   {
     value: "uitgaan",
@@ -63,7 +65,7 @@ export const activities = [
   },
 ];
 
-export default function DragItem({ item, provided, snapshot, setItemData, hoursLeft, removeFromList }) {
+export default function DragItem({ item, provided, snapshot, setItemData, hoursLeft, removeFromList, hasSubmitted }) {
   const handleInputChange = (obj) => {
     if (obj === null) return setItemData({ ...item, activityName: item.activityName });
     const { value } = obj;
@@ -77,9 +79,11 @@ export default function DragItem({ item, provided, snapshot, setItemData, hoursL
       {...provided.dragHandleProps}
       style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
     >
-      <div style={{ position: "absolute", top: "5px", right: "5px", color: "white", cursor: "pointer" }} onClick={() => removeFromList()}>
-        x
-      </div>
+      {!hasSubmitted && (
+        <div style={{ position: "absolute", top: "5px", right: "5px", color: "white", cursor: "pointer" }} onClick={() => removeFromList()}>
+          x
+        </div>
+      )}
       <div>
         <Select
           options={activities}
@@ -89,6 +93,7 @@ export default function DragItem({ item, provided, snapshot, setItemData, hoursL
           isSearchable={true}
           placeholder="Activiteit"
           onChange={handleInputChange}
+          isDisabled={hasSubmitted}
         />
       </div>
 
@@ -98,6 +103,7 @@ export default function DragItem({ item, provided, snapshot, setItemData, hoursL
           label="Aantal uur"
           value={item.time}
           classname={styles.input}
+          disabled={hasSubmitted}
           onChange={(e) => {
             if (parseFloat(e.target.value || 0) < 0) return;
             if (parseFloat(e.target.value || 0) - parseFloat(item.time || 0) > hoursLeft) return;

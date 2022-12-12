@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import DragItem, { activities } from "../../components/draggable/DragItem";
 import Button from "../Button";
+import styles from "../../styles/components/assignments/fifteen.module.css";
+import { EXAMPLEDATA } from "../../ERD/assignmentData";
 
 const STARTPOINTS = 10;
 
@@ -25,9 +27,7 @@ export const getItemStyle = (isDragging, draggableStyle) => ({
   borderRadius: "10px",
 
   // change background colour if dragging
-  background: isDragging
-    ? "var(--adsai-medium-blue)"
-    : "var(--adsai-light-blue)",
+  background: isDragging ? "var(--adsai-medium-blue)" : "var(--adsai-light-blue)",
   border: "1px solid var(--adsai-medium-blue)",
   color: "black",
   boxShadow: isDragging ? "rgba(0, 0, 0, 0.5) 0px 3px 12px" : "none",
@@ -57,16 +57,57 @@ export function AssignmentWeekFifteen() {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [totalHoursFilled, setTotalHoursFilled] = useState(0);
   const [pointsLogged, setPointsLogged] = useState([]);
+  const [totalPointsAssignment, setTotalPointsAssignment] = useState(0);
 
   useEffect(() => {
     fetch("/api/assignment/1").then((res) => {
       res.json().then((data) => {
         if (!data.success || !data.data) return;
-        const { answer } = data.data;
+        const { answer, totalPoints } = data.data;
 
         setHasSubmitted(true);
-        console.log(JSON.parse(answer));
-        setDraggableGroupItems(JSON.parse(answer));
+        const parsedAnswer = JSON.parse(answer);
+        setDraggableGroupItems(parsedAnswer);
+        setTotalPointsAssignment(totalPoints);
+
+        const groupedItems = groupItems(parsedAnswer);
+
+        const pointsLoggedTemp = [];
+        groupedItems.forEach((group) => {
+          const activityData = activities.find((a) => a.value === group.activityName);
+
+          if (activityData.type === "neutral") {
+            pointsLoggedTemp.push({ activityName: activityData.label, message: "Geen punten gegeven, neutrale activiteit" });
+            return;
+          }
+
+          if (activityData.type === "negative") {
+            if (group.time > activityData.max) {
+              pointsLoggedTemp.push({ activityName: activityData.label, message: "-3 punten, te veel tijd besteed aan de activiteit" });
+              return;
+            }
+
+            pointsLoggedTemp.push({ activityName: activityData.label, message: "Geen punten gegeven, de maximale tijd niet overschreden" });
+            return;
+          }
+
+          if (activityData.type === "positive") {
+            if (group.time > activityData.max) {
+              pointsLoggedTemp.push({ activityName: activityData.label, message: "-1 punt, te veel tijd besteed aan de activiteit" });
+              return;
+            }
+
+            if (group.time < activityData.min) {
+              pointsLoggedTemp.push({ activityName: activityData.label, message: "-2 punten, te weinig tijd besteed aan activiteit" });
+              return;
+            }
+
+            pointsLoggedTemp.push({ activityName: activityData.label, message: "+2 punten, het valt binnen de tijdslimiet" });
+            return;
+          }
+        });
+
+        setPointsLogged(pointsLoggedTemp);
       });
     });
   }, []);
@@ -102,6 +143,7 @@ export function AssignmentWeekFifteen() {
   };
 
   const onDragEnd = (result) => {
+    if (hasSubmitted) return;
     const { source, destination } = result;
 
     // dropped outside the list
@@ -112,21 +154,12 @@ export function AssignmentWeekFifteen() {
     const dInd = +destination.droppableId;
 
     if (sInd === dInd) {
-      const items = reorder(
-        draggableGroupItems[sInd],
-        source.index,
-        destination.index
-      );
+      const items = reorder(draggableGroupItems[sInd], source.index, destination.index);
       const newState = [...draggableGroupItems];
       newState[sInd] = items;
       setDraggableGroupItems(newState);
     } else {
-      const result = move(
-        draggableGroupItems[sInd],
-        draggableGroupItems[dInd],
-        source,
-        destination
-      );
+      const result = move(draggableGroupItems[sInd], draggableGroupItems[dInd], source, destination);
       const newState = [...draggableGroupItems];
       newState[sInd] = result[sInd] || [];
       newState[dInd] = result[dInd] || [];
@@ -163,9 +196,8 @@ export function AssignmentWeekFifteen() {
     setDraggableGroupItems(newState);
   };
 
-  const calculatePoints = () => {
-    // group all activities and total time per activity
-    const groupedActivities = draggableGroupItems.reduce((acc, cur) => {
+  const groupItems = (arr) => {
+    return arr.reduce((acc, cur) => {
       cur.forEach((item) => {
         if (item && item.activityName) {
           const activity = acc.find((a) => a.activityName === item.activityName);
@@ -178,6 +210,11 @@ export function AssignmentWeekFifteen() {
       });
       return acc;
     }, []);
+  };
+
+  const calculatePoints = () => {
+    // group all activities and total time per activity
+    const groupedActivities = groupItems(draggableGroupItems);
 
     const pointsLoggedTemp = [];
     // calculate points per activity
@@ -186,37 +223,38 @@ export function AssignmentWeekFifteen() {
       if (!activityData) return acc;
 
       if (activityData.type === "neutral") {
-        pointsLoggedTemp.push({ activityName: cur.activityName, message: "Geen punten gegeven neutrale activiteit" });
+        pointsLoggedTemp.push({ activityName: activityData.label, message: "Geen punten gegeven, neutrale activiteit" });
         return acc;
       }
 
       if (activityData.type === "negative") {
         if (cur.time > activityData.max) {
-          pointsLoggedTemp.push({ activityName: cur.activityName, message: "-3 punten, teveel tijd besteed aan activiteit" });
+          pointsLoggedTemp.push({ activityName: activityData.label, message: "-3 punten, te veel tijd besteed aan de activiteit" });
           return acc - 3;
         }
 
-        pointsLoggedTemp.push({ activityName: cur.activityName, message: "Geen punten gegeven, negatieve activiteit" });
+        pointsLoggedTemp.push({ activityName: activityData.label, message: "Geen punten gegeven, de maximale tijd niet overschreden" });
         return acc;
       }
 
       if (activityData.type === "positive") {
         if (cur.time > activityData.max) {
-          pointsLoggedTemp.push({ activityName: cur.activityName, message: "-2 punten, te veel tijd besteed aan activiteit" });
-          return acc - 2;
-        }
-
-        if (cur.time < activityData.min) {
-          pointsLoggedTemp.push({ activityName: cur.activityName, message: "-1 punt, te weinig tijd besteed aan activiteit" });
+          pointsLoggedTemp.push({ activityName: activityData.label, message: "-1 punt, te veel tijd besteed aan de activiteit" });
           return acc - 1;
         }
 
-        pointsLoggedTemp.push({ activityName: cur.activityName, message: "+2 puntent, in de tijd vlak dat word verwacht" });
+        if (cur.time < activityData.min) {
+          pointsLoggedTemp.push({ activityName: activityData.label, message: "-2 punten, te weinig tijd besteed aan activiteit" });
+          return acc - 2;
+        }
+
+        pointsLoggedTemp.push({ activityName: activityData.label, message: "+2 punten, het valt binnen de tijdslimiet" });
         return acc + 2;
       }
     }, STARTPOINTS);
 
     setPointsLogged(pointsLoggedTemp);
+    setTotalPointsAssignment(totalPoints);
 
     fetch("/api/assignment/submit/1", {
       method: "POST",
@@ -237,13 +275,36 @@ export function AssignmentWeekFifteen() {
 
   return (
     <>
-      <ul>
-        {pointsLogged.map((item, index) => (
-          <li key={index}>
-            {item.activityName} - {item.message}
-          </li>
-        ))}
-      </ul>
+      {pointsLogged.length > 0 && (
+        <div>
+          <table>
+            <tr>
+              <th>Activiteit</th>
+              <th></th>
+            </tr>
+            {pointsLogged.map((item, index) => (
+              <tr key={index}>
+                <td>{item.activityName}</td>
+                <td>{item.message}</td>
+              </tr>
+            ))}
+          </table>
+        </div>
+      )}
+      {hasSubmitted && (
+        <div className={styles.alert}>
+          <p>
+            Je hebt <strong>{totalPointsAssignment}</strong> punten gekregen voor de opdracht. Dit is{" "}
+            <strong>{totalPointsAssignment >= STARTPOINTS ? "voldoende" : "onvoldoende"}</strong>.
+          </p>
+          {totalPointsAssignment < STARTPOINTS && (
+            <p>
+              Je planning kan beter! Je komt <strong>{STARTPOINTS - totalPointsAssignment}</strong> punten tekort. Zie je verbeterpunten?
+            </p>
+          )}
+          {totalPointsAssignment >= STARTPOINTS && <p>Je planning is goed! Je hebt de juiste hoeveelheid tijd besteed aan de activiteiten.</p>}
+        </div>
+      )}
       <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", margin: "20px 0" }}>
         <DragDropContext onDragEnd={onDragEnd}>
           {draggableGroupItems.map((draggableGroupItem, index) => {
@@ -263,7 +324,7 @@ export function AssignmentWeekFifteen() {
                   >
                     <div style={{ margin: "5px" }}>
                       <h3 style={{ margin: 0, padding: 0 }}>{days[index]}</h3>
-                      <p style={{ margin: 0, padding: 0 }}>{hoursLeft} uur intevullen</p>
+                      <p style={{ margin: 0, padding: 0 }}>{hoursLeft} uur in te plannen</p>
                     </div>
                     <div style={{ flex: "1" }}>
                       {draggableGroupItem.map((item, itemIndex) => {
@@ -277,6 +338,7 @@ export function AssignmentWeekFifteen() {
                                 snapshot={snapshot}
                                 setItemData={(data) => setItemInGroup(index, itemIndex, data)}
                                 removeFromList={() => removeFromList(index, itemIndex)}
+                                hasSubmitted={hasSubmitted}
                               />
                             )}
                           </Draggable>

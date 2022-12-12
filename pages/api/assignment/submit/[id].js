@@ -15,11 +15,12 @@ async function handler(req, res) {
 
     const db = await getConnection();
     //insert into User_Assignment the User_id, Assignment_Id, achieved and answer
-    const [rows] = await db.query("INSERT INTO User_Assignment (User_id, Assignment_id, Achieved, answer) VALUES (?, ?, ?, ?)", [
+    const [rows] = await db.query("INSERT INTO User_Assignment (User_id, Assignment_id, Achieved, answer, totalPoints) VALUES (?, ?, ?, ?, ?)", [
       user.Id,
       id,
       0,
       JSON.stringify(assignmentAnswer),
+      poinstGiven,
     ]);
 
     //update userpoints
