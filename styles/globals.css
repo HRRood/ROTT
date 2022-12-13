@@ -9,11 +9,14 @@ body {
 
 :root {
   --adsai-light-pink: #efc6c4;
+  --adsai-very-light-pink: #f1d8d8;
   --adsai-medium-pink: #ce4942;
   --adsai-light-blue: #b3e8f0;
   --adsai-medium-blue: #07b4ce;
   --adsai-dark-blue: #39445a;
   --adsai-dark-blue-light: #92a4ca;
+  --adsai-light-green: #d3f3dd;
+  --adsai-medium-green: #0cac34;
 }
 
 a {
