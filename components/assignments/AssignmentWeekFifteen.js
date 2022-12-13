@@ -27,9 +27,7 @@ export const getItemStyle = (isDragging, draggableStyle) => ({
   borderRadius: "10px",
 
   // change background colour if dragging
-  background: isDragging
-    ? "var(--adsai-medium-blue)"
-    : "var(--adsai-light-blue)",
+  background: isDragging ? "var(--adsai-medium-blue)" : "var(--adsai-light-blue)",
   border: "1px solid var(--adsai-medium-blue)",
   color: "black",
   boxShadow: isDragging ? "rgba(0, 0, 0, 0.5) 0px 3px 12px" : "none",
@@ -55,15 +53,8 @@ const getListStyle = (isDraggingOver) => ({
   border: "1px solid rgba(0, 0, 0, 0.1)",
 });
 export function AssignmentWeekFifteen() {
-  const [draggableGroupItems, setDraggableGroupItems] = useState([
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    []]
-  );
+  const [draggableGroupItems, setDraggableGroupItems] = useState(EXAMPLEDATA);
+  // const [draggableGroupItems, setDraggableGroupItems] = useState([[], [], [], [], [], [], []]);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [totalHoursFilled, setTotalHoursFilled] = useState(0);
   const [pointsLogged, setPointsLogged] = useState([]);
@@ -84,9 +75,7 @@ export function AssignmentWeekFifteen() {
 
         const pointsLoggedTemp = [];
         groupedItems.forEach((group) => {
-          const activityData = activities.find(
-            (a) => a.value === group.activityName
-          );
+          const activityData = activities.find((a) => a.value === group.activityName);
 
           if (activityData.type === "neutral") {
             pointsLoggedTemp.push({
@@ -110,8 +99,7 @@ export function AssignmentWeekFifteen() {
             pointsLoggedTemp.push({
               activityName: activityData.label,
               score: 0,
-              message:
-                "Geen punten gegeven, de maximale tijd niet overschreden",
+              message: "Geen punten gegeven, de maximale tijd niet overschreden",
             });
             return;
           }
@@ -151,10 +139,7 @@ export function AssignmentWeekFifteen() {
 
   useEffect(() => {
     const totalHoursFilled = draggableGroupItems.reduce((acc, cur) => {
-      const totalHours = cur.reduce(
-        (acc, cur) => (cur ? acc + parseFloat(cur.time || 0) : 0),
-        0
-      );
+      const totalHours = cur.reduce((acc, cur) => (cur ? acc + parseFloat(cur.time || 0) : 0), 0);
       return acc + totalHours;
     }, 0);
     setTotalHoursFilled(totalHoursFilled);
@@ -194,21 +179,12 @@ export function AssignmentWeekFifteen() {
     const dInd = +destination.droppableId;
 
     if (sInd === dInd) {
-      const items = reorder(
-        draggableGroupItems[sInd],
-        source.index,
-        destination.index
-      );
+      const items = reorder(draggableGroupItems[sInd], source.index, destination.index);
       const newState = [...draggableGroupItems];
       newState[sInd] = items;
       setDraggableGroupItems(newState);
     } else {
-      const result = move(
-        draggableGroupItems[sInd],
-        draggableGroupItems[dInd],
-        source,
-        destination
-      );
+      const result = move(draggableGroupItems[sInd], draggableGroupItems[dInd], source, destination);
       const newState = [...draggableGroupItems];
       newState[sInd] = result[sInd] || [];
       newState[dInd] = result[dInd] || [];
@@ -249,9 +225,7 @@ export function AssignmentWeekFifteen() {
     return arr.reduce((acc, cur) => {
       cur.forEach((item) => {
         if (item && item.activityName) {
-          const activity = acc.find(
-            (a) => a.activityName === item.activityName
-          );
+          const activity = acc.find((a) => a.activityName === item.activityName);
           if (activity) {
             activity.time += parseFloat(item.time);
           } else {
@@ -388,29 +362,17 @@ export function AssignmentWeekFifteen() {
           {hasSubmitted && (
             <div className={setResultDivClass(totalPointsAssignment)}>
               <span>
-                Je hebt <strong>{totalPointsAssignment}</strong> punten gekregen
-                voor de opdracht. Dit is{" "}
-                <strong>
-                  {totalPointsAssignment >= STARTPOINTS
-                    ? "voldoende"
-                    : "onvoldoende"}
-                </strong>
+                Je hebt <strong>{totalPointsAssignment}</strong> punten gekregen voor de opdracht. Dit is{" "}
+                <strong>{totalPointsAssignment >= STARTPOINTS ? "voldoende" : "onvoldoende"}</strong>
                 .&nbsp;
               </span>
 
               {totalPointsAssignment < STARTPOINTS && (
                 <span>
-                  Je planning kan beter. Je komt{" "}
-                  <strong>{STARTPOINTS - totalPointsAssignment}</strong> punten
-                  tekort. Zie je verbeterpunten?
+                  Je planning kan beter. Je komt <strong>{STARTPOINTS - totalPointsAssignment}</strong> punten tekort. Zie je verbeterpunten?
                 </span>
               )}
-              {totalPointsAssignment >= STARTPOINTS && (
-                <span>
-                  Je planning is goed! Je hebt de juiste hoeveelheid tijd
-                  besteed aan de activiteiten.
-                </span>
-              )}
+              {totalPointsAssignment >= STARTPOINTS && <span>Je planning is goed! Je hebt de juiste hoeveelheid tijd besteed aan de activiteiten.</span>}
             </div>
           )}
         </div>
@@ -445,13 +407,8 @@ export function AssignmentWeekFifteen() {
       >
         <DragDropContext onDragEnd={onDragEnd}>
           {draggableGroupItems.map((draggableGroupItem, index) => {
-            const hasUnfilledHour = draggableGroupItem.some(
-              (item) => !item || !item.time || !item.activityName
-            );
-            const totalHoursFilled = draggableGroupItem.reduce(
-              (acc, cur) => (cur ? acc + parseFloat(cur.time || 0) : 0),
-              0
-            );
+            const hasUnfilledHour = draggableGroupItem.some((item) => !item || !item.time || !item.activityName);
+            const totalHoursFilled = draggableGroupItem.reduce((acc, cur) => (cur ? acc + parseFloat(cur.time || 0) : 0), 0);
 
             const hoursLeft = 10 - totalHoursFilled;
             return (
@@ -466,30 +423,20 @@ export function AssignmentWeekFifteen() {
                   >
                     <div style={{ margin: "5px" }}>
                       <h3 style={{ margin: 0, padding: 0 }}>{days[index]}</h3>
-                      <p style={{ margin: 0, padding: 0 }}>
-                        {hoursLeft} uur in te plannen
-                      </p>
+                      <p style={{ margin: 0, padding: 0 }}>{hoursLeft} uur in te plannen</p>
                     </div>
                     <div style={{ flex: "1" }}>
                       {draggableGroupItem.map((item, itemIndex) => {
                         return (
-                          <Draggable
-                            key={item.id}
-                            draggableId={item.id}
-                            index={itemIndex}
-                          >
+                          <Draggable key={item.id} draggableId={item.id} index={itemIndex}>
                             {(provided, snapshot) => (
                               <DragItem
                                 item={item}
                                 hoursLeft={hoursLeft}
                                 provided={provided}
                                 snapshot={snapshot}
-                                setItemData={(data) =>
-                                  setItemInGroup(index, itemIndex, data)
-                                }
-                                removeFromList={() =>
-                                  removeFromList(index, itemIndex)
-                                }
+                                setItemData={(data) => setItemInGroup(index, itemIndex, data)}
+                                removeFromList={() => removeFromList(index, itemIndex)}
                                 hasSubmitted={hasSubmitted}
                               />
                             )}
@@ -498,11 +445,7 @@ export function AssignmentWeekFifteen() {
                       })}
                     </div>
                     {provided.placeholder}
-                    {hoursLeft > 0 && !hasUnfilledHour && (
-                      <button onClick={() => addItemToGivenList(index)}>
-                        Add
-                      </button>
-                    )}
+                    {hoursLeft > 0 && !hasUnfilledHour && <button onClick={() => addItemToGivenList(index)}>Add</button>}
                   </div>
                 )}
               </Droppable>

@@ -13,7 +13,12 @@ export const EXAMPLEDATA = [
     { id: "pn79e", activityName: "winkelen", time: "2" },
     { id: "1cbenk", activityName: "ontspanning", time: "2" },
   ],
-  [],
+  [
+    { id: "v89dmp", activityName: "school", time: "3" },
+    { id: "1cbenk", activityName: "ontspanning", time: "4" },
+    { id: "1cxenk", activityName: "sport", time: "2" },
+    { id: "427j5u", activityName: "huishouden-koken", time: "1" },
+  ],
   [],
   [
     { id: "pyeucc", activityName: "school", time: "6" },
