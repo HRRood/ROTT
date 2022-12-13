@@ -31,9 +31,26 @@ export default function AssignmentWeekFifteenPage({ userData }) {
         </Column>
         <Column width={100} smWidth={70} lgWidth={80}>
           <Row>
-            <Column width={100} smWidth={100} lgWidth={100}>
+            <Column width={80} smWidth={80} lgWidth={80}>
               <div style={{ textAlign: "center" }}>
                 <h1>Prioriteiten stellen</h1>
+              </div>
+            </Column>
+            <Column width={20} smWidth={20} lgWidth={20}>
+              <div style={{ padding: "30px" }}>
+                <a
+                  href="/assignments/assignmentweekfifteen/edumundo"
+                  target="_blank"
+                  style={{
+                    backgroundColor: "var(--adsai-medium-blue)",
+                    padding: "20px",
+                    marginTop: "20px",
+                    borderRadius: "10px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Open Edubook
+                </a>
               </div>
             </Column>
           </Row>
