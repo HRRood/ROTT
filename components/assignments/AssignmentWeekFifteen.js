@@ -55,7 +55,15 @@ const getListStyle = (isDraggingOver) => ({
   border: "1px solid rgba(0, 0, 0, 0.1)",
 });
 export function AssignmentWeekFifteen() {
-  const [draggableGroupItems, setDraggableGroupItems] = useState(EXAMPLEDATA);
+  const [draggableGroupItems, setDraggableGroupItems] = useState(
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
+  );
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [totalHoursFilled, setTotalHoursFilled] = useState(0);
   const [pointsLogged, setPointsLogged] = useState([]);
