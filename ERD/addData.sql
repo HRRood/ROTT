@@ -1,5 +1,11 @@
 USE rottprototype;
 
+INSERT INTO rottprototype.user (Id, Username, Password)
+VALUES (1, 'janTest', 'test1234')
+ON DUPLICATE KEY UPDATE
+	rottprototype.user.Username = 'janTest',
+    rottprototype.user.Password = 'test1234'
+
 UPDATE rottprototype.user
 SET user.AssignmentStreak = 3,
 user.Points = 46,
