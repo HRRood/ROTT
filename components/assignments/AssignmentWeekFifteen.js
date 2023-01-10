@@ -445,7 +445,11 @@ export function AssignmentWeekFifteen() {
                       })}
                     </div>
                     {provided.placeholder}
-                    {hoursLeft > 0 && !hasUnfilledHour && <button onClick={() => addItemToGivenList(index)}>Add</button>}
+                    {hoursLeft > 0 && !hasUnfilledHour && (
+                      <button onClick={() => addItemToGivenList(index)}>
+                        Toevoegen
+                      </button>
+                    )}
                   </div>
                 )}
               </Droppable>
@@ -456,7 +460,7 @@ export function AssignmentWeekFifteen() {
 
       {totalHoursFilled >= 70 && !hasSubmitted && (
         <div style={{ margin: "10px 0" }}>
-          <Button text="Submit" onClick={calculatePoints} />
+          <Button text="Indienen" onClick={calculatePoints} />
         </div>
       )}
     </>
